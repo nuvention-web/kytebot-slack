@@ -19,11 +19,12 @@ app.use(function(req, res, next) {
 
 // For parsing application/x-www-form-urlencoded 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json()); 
 
 
 //====ROOT DIRECTORY===//
 app.get('/', function(req, res) {
-  res.json('you are at the nu world cup server!');
+  res.json('you are at the kyte-slackbot server!');
   console.log('A GET request was made');
 });
 
