@@ -19,6 +19,8 @@ app.use(function(req, res, next) {
 
 // For parsing application/x-www-form-urlencoded 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// For parsing JSON
 app.use(bodyParser.json()); 
 
 
@@ -29,8 +31,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res) {
-	console.log(req)
-	res.json({'challenge': 'the token'})
+	res.json({'challenge': req.body.challenge})
  });
 
 // app.post('/visualize', function(req, res) {
