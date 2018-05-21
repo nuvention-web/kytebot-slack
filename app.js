@@ -29,9 +29,12 @@ app.get('/', function(req, res) {
 
 app.post('/', function(req, res) {
 	console.log(req.body)
-	res.json('challenge key')
+	res.json(req.body)
  });
 
+// app.post('/visualize', function(req, res) {
+
+//  });
 
 //====MONGOOSE CONNECT===//
 // mongoose.connect(url, function (err, db) {
