@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 
 app.post('/', function(req, res) {
 	console.log(req)
-	res.json({'challenge': req.body.challenge})
+	res.json({'challenge': 'the token'})
  });
 
 // app.post('/visualize', function(req, res) {
