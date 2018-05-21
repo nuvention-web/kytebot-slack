@@ -28,7 +28,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res) {
-	console.log(req.body.type)
+	console.log(req)
 	res.json(req.body)
  });
 
