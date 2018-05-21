@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const expressValidator = require('express-validator');
 const mongoose = require('mongoose');
-const Game = require('./models/game.js')
-const Team = require('./models/team.js')
+const User = require('./models/user.js')
+const Triad = require('./models/triad.js')
 const app = express();
-const url = 'mongodb://nu-worldcupadmin:2018@ds257579.mlab.com:57579/nu-worldcup';
+// const url = '';
 const axios = require('axios');
 
 // For cors
