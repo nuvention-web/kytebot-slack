@@ -18,10 +18,6 @@ const userSchema = new Schema({
   images: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
-  },
-  : {
-    type: mongoose.Schema.Types.Mixed,
-    required: true,
   }
 })
 
