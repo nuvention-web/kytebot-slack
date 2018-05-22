@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+  id: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
   name: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
@@ -11,15 +15,28 @@ const userSchema = new Schema({
     type: mongoose.Schema.Types.Mixed,
     required: true,
   },
-  links: {
+  totalMessages: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
   },
-  images: {
+  lastWeeksMessages: {
     type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  links: {
+    type: [mongoose.Schema.Types.Mixed],
+    required: true,
+  },
+  images: {
+    type: [mongoose.Schema.Types.Mixed],
     required: true,
   }
 })
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
+
+// Last weeks messages stores all the last weeks messages. Restarts every week
+// messages are this week's messages (live)
+// totalMessages are total messages sent ever
+// links and images are links and images that a user has sent

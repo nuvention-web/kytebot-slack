@@ -36,14 +36,47 @@ app.post('/activity', function(req, res) {
 	res.json({'challenge': req.body.challenge});
  });
 
+function newChannel(body) {
+	// Add new users and traid to the database
+	// Initialize everything to 0
+}
+
+function handleMessage(body) {
+	User.findOne({'name': body.user}, (err, user) => {
+		if (err) {
+			console.log("Error in finding User", err)
+		}
+		if (user) {
+			user.totalMessages = user.totalMessages + 1;
+			user.messages = user.messages + 1;
+			user.save((err) => {
+				if (err) {
+			  		console.log("Error adding messagge info to mongo", err);
+			  	}
+			});
+
+			Triad.findOne({'channel': body.channel}, (err, triad) => {
+				if (err) {
+					console.log("Error in finding Triad", err)
+				}
+				if (triad) {
+					// Add the stats to the triad for the mentor/mentee
+				}
+			});
+		}
+		else {
+			// Couldn't find the user. Add the user to the database
+		}
+	});
+}
+
 
 // Look up a user by email: https://api.slack.com/methods/users.lookupByEmail
 
 // Look up a user by ID: https://api.slack.com/methods/users.profile.get
 
 
-
-
+// For next dev slice:
 // app.post('/visualize', function(req, res) {
 
 //  });
