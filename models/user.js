@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  id: {
+  user: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
   },
@@ -30,6 +30,10 @@ const userSchema = new Schema({
   images: {
     type: [mongoose.Schema.Types.Mixed],
     required: true,
+  },
+  type: {
+    type: [mongoose.Schema.Types.Mixed],
+    required: true,
   }
 })
 
@@ -40,3 +44,4 @@ module.exports = User;
 // messages are this week's messages (live)
 // totalMessages are total messages sent ever
 // links and images are links and images that a user has sent
+// user is the id

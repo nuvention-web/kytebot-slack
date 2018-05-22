@@ -33,16 +33,91 @@ app.get('/', function(req, res) {
 // Here we get all activity. Need to parse by the event type and change the database
 app.post('/activity', function(req, res) {
 	console.log(req.body);
+	switch(req.body.event.type) {
+		case 'channel_created':
+			newChannel(req.body);
+			break;
+		case 'message':
+			if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'channel_join') {
+				joinChannel(req.body);
+			}
+			else if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'new_user') {
+				// Not sure this is the right key for new_user being added to the slack
+				addMember(req.body);
+			}
+			else if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'file_share') {
+				addFile(req.body);
+			}
+			else {
+				handleMessage(req.body);
+			}
+			break;
+		default:
+			console.log('The action is not something we are storing in the database')
+	}
 	res.json({'challenge': req.body.challenge});
  });
 
 function newChannel(body) {
-	// Add new users and traid to the database
-	// Initialize everything to 0
+	var new_triad = new Triad({ triadName: body.event.channel.name,
+								channel: body.event.channel.id,
+								mentor1: '',
+								mentor2: '',
+								mentee: '',
+								mentor1Messages: 0,
+								mentor2Messages: 0,
+								menteeMessages: 0});
+	new_triad.save(function (err) {
+	  if (err) {
+	  	console.log("Error in saving new triad to db", err);
+	  }
+	});
+}
+
+function addFile(body) {
+	console.log('Not implemented yet - addFile');
+}
+
+function joinChannel(body) {
+	// add new user to the channel
+	// Check type
+	console.log('Not implemented yet - joinChannel');
+}
+
+// Someone new is added to slack
+function addMember(body) {
+	// Need to dm the user and ask if they are a mentor (industry professional/college) or mentee (high school)
+	console.log('Not implemented yet - addMember');
+}
+
+function triadMessage(body) {
+	Triad.findOne({'channel': body.channel}, (err, triad) => {
+		if (err) {
+			console.log("Error in finding Triad", err)
+		}
+		if (triad) {
+			// Look at user id and add to the correct mentor/mentee
+			if (user.user = triad.mentor1) {
+				triad.mentor1Messages = triad.mentor1Messages + 1;
+			}
+			else if (user.user = triad.mentor2) {
+				triad.mentor2Messages = triad.mentor2Messages + 1;
+			}
+			else {
+				// It was the mentee
+				triad.menteeMessages = triad.menteeMessages + 1;
+			}
+			triad.save((err) => {
+				if (err) {
+					console.log("Error adding message to mlab in triad for user")
+				}
+			});
+		}
+	});
 }
 
 function handleMessage(body) {
-	User.findOne({'name': body.user}, (err, user) => {
+	User.findOne({'user': body.user}, (err, user) => {
 		if (err) {
 			console.log("Error in finding User", err)
 		}
@@ -51,21 +126,10 @@ function handleMessage(body) {
 			user.messages = user.messages + 1;
 			user.save((err) => {
 				if (err) {
-			  		console.log("Error adding messagge info to mongo", err);
+			  		console.log("Error adding messagge info to mlab", err);
 			  	}
 			});
-
-			Triad.findOne({'channel': body.channel}, (err, triad) => {
-				if (err) {
-					console.log("Error in finding Triad", err)
-				}
-				if (triad) {
-					// Add the stats to the triad for the mentor/mentee
-				}
-			});
-		}
-		else {
-			// Couldn't find the user. Add the user to the database
+			triadMessage(body);
 		}
 	});
 }

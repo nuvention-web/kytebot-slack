@@ -7,7 +7,7 @@ const triadSchema = new Schema({
     type: mongoose.Schema.Types.Mixed,
     required: true
   },
-  id: {
+  channel: {
     type: mongoose.Schema.Types.Mixed,
     required: true
   },
@@ -23,15 +23,15 @@ const triadSchema = new Schema({
     type: mongoose.Schema.Types.Mixed,
     required: true
   },
-  mentor1messages: {
+  mentor1Messages: {
     type: mongoose.Schema.Types.Mixed,
     required: true
   },
-  mentor2messages: {
+  mentor2Messages: {
     type: mongoose.Schema.Types.Mixed,
     required: true
   },
-  menteemessages: {
+  menteeMessages: {
     type: mongoose.Schema.Types.Mixed,
     required: true
   }
