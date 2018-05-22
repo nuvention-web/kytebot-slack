@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const User = require('./models/user.js')
 const Triad = require('./models/triad.js')
 const app = express();
-// const url = '';
+const url = 'mongodb://admin:kyteadmin@ds231070.mlab.com:31070/kyte-slack';
 const axios = require('axios');
 
 // For cors
@@ -30,23 +30,32 @@ app.get('/', function(req, res) {
   console.log('A GET request was made');
 });
 
-app.post('/', function(req, res) {
+// Here we get all activity. Need to parse by the event type and change the database
+app.post('/activity', function(req, res) {
 	console.log(req.body);
 	res.json({'challenge': req.body.challenge});
  });
+
+
+// Look up a user by email: https://api.slack.com/methods/users.lookupByEmail
+
+// Look up a user by ID: https://api.slack.com/methods/users.profile.get
+
+
+
 
 // app.post('/visualize', function(req, res) {
 
 //  });
 
 //====MONGOOSE CONNECT===//
-// mongoose.connect(url, function (err, db) {
-// 	if (err) {
-// 		console.log('Unable to connect to the mongoDB server. Error:', err);
-// 	} else {
-// 		console.log('Connection established to', url);
-// 	}
-// });
+mongoose.connect(url, function (err, db) {
+	if (err) {
+		console.log('Unable to connect to the mongoDB server. Error:', err);
+	} else {
+		console.log('Connection established to', url);
+	}
+});
 
 app.listen(process.env.PORT || 4000);
 console.log('starting the application');
