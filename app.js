@@ -9,6 +9,7 @@ const Triad = require('./models/triad.js')
 const app = express();
 const url = 'mongodb://admin:kyteadmin@ds231070.mlab.com:31070/kyte-slack';
 const axios = require('axios');
+const messages = require('./messages');
 
 // For cors
 app.use(function(req, res, next) {
@@ -41,9 +42,9 @@ app.post('/activity', function(req, res) {
 			if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'channel_join') {
 				joinChannel(req.body);
 			}
-			else if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'new_user') {
+			else if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'team_join') {
 				// Not sure this is the right key for new_user being added to the slack
-				addMember(req.body);
+				addUser(req.body);
 			}
 			else if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'file_share') {
 				addFile(req.body);
@@ -57,6 +58,17 @@ app.post('/activity', function(req, res) {
 	}
 	res.json({'challenge': req.body.challenge});
  });
+
+app.post('/action-endpoint', function(req, res) { 
+	// Will receive a POST request when the button has been responded to
+	// if the callback is mentor_or_mentee then addUser() for whatever they responded with
+});
+
+app.post('/options-load-endpoint', function(req, res) { 
+
+});
+
+
 
 function newChannel(body) {
 	var new_triad = new Triad({ triadName: body.event.channel.name,
@@ -85,7 +97,7 @@ function joinChannel(body) {
 }
 
 // Someone new is added to slack
-function addMember(body) {
+function addUser(body) {
 	// Need to dm the user and ask if they are a mentor (industry professional/college) or mentee (high school)
 	console.log('Not implemented yet - addMember');
 }
