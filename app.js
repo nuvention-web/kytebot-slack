@@ -9,7 +9,7 @@ const Triad = require('./models/triad.js')
 const app = express();
 const url = 'mongodb://admin:kyteadmin@ds231070.mlab.com:31070/kyte-slack';
 const axios = require('axios');
-const messages = require('./messages');
+// const messages = require('./messages');
 
 // For cors
 app.use(function(req, res, next) {
