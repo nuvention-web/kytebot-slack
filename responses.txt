@@ -1,0 +1,100 @@
+
+------------------
+NEW USER TO SLACK
+------------------
+
+2018-05-25T15:06:31.470554+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:06:31.470567+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.470569+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-05-25T15:06:31.470580+00:00 app[web.1]: event:
+2018-05-25T15:06:31.470586+00:00 app[web.1]: { type: 'team_join',
+2018-05-25T15:06:31.470588+00:00 app[web.1]: user:
+2018-05-25T15:06:31.470589+00:00 app[web.1]: { id: 'UAVM2T464',
+2018-05-25T15:06:31.470591+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.470593+00:00 app[web.1]: name: 'charbelbourjas2019',
+2018-05-25T15:06:31.470594+00:00 app[web.1]: deleted: false,
+2018-05-25T15:06:31.470596+00:00 app[web.1]: color: '2b6836',
+2018-05-25T15:06:31.470598+00:00 app[web.1]: real_name: 'Charbel Bourjas',
+2018-05-25T15:06:31.470599+00:00 app[web.1]: tz: 'America/Chicago',
+2018-05-25T15:06:31.470601+00:00 app[web.1]: tz_label: 'Central Daylight Time',
+2018-05-25T15:06:31.470603+00:00 app[web.1]: tz_offset: -18000,
+2018-05-25T15:06:31.470604+00:00 app[web.1]: profile: [Object],
+2018-05-25T15:06:31.470606+00:00 app[web.1]: is_admin: false,
+2018-05-25T15:06:31.470608+00:00 app[web.1]: is_owner: false,
+2018-05-25T15:06:31.470609+00:00 app[web.1]: is_primary_owner: false,
+2018-05-25T15:06:31.470611+00:00 app[web.1]: is_restricted: false,
+2018-05-25T15:06:31.470612+00:00 app[web.1]: is_ultra_restricted: false,
+2018-05-25T15:06:31.470618+00:00 app[web.1]: is_bot: false,
+2018-05-25T15:06:31.470619+00:00 app[web.1]: updated: 1527260791,
+2018-05-25T15:06:31.470621+00:00 app[web.1]: is_app_user: false,
+2018-05-25T15:06:31.470622+00:00 app[web.1]: presence: 'away' },
+2018-05-25T15:06:31.470624+00:00 app[web.1]: cache_ts: 1527260791,
+2018-05-25T15:06:31.470626+00:00 app[web.1]: event_ts: '1527260791.000199' },
+2018-05-25T15:06:31.470627+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:06:31.470629+00:00 app[web.1]: event_id: 'EvAVM2TGC8',
+2018-05-25T15:06:31.470638+00:00 app[web.1]: event_time: 1527260791,
+2018-05-25T15:06:31.470640+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+2018-05-25T15:06:31.470751+00:00 app[web.1]: The action is not something we are storing in the database
+2018-05-25T15:06:31.536474+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.536475+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+
+2018-05-25T15:06:31.536470+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:06:31.536479+00:00 app[web.1]: { user: 'UAVM2T464',
+2018-05-25T15:06:31.536477+00:00 app[web.1]: event:
+2018-05-25T15:06:31.536481+00:00 app[web.1]: text: '<@UAVM2T464> has joined the channel',
+2018-05-25T15:06:31.536483+00:00 app[web.1]: type: 'message',
+2018-05-25T15:06:31.536486+00:00 app[web.1]: subtype: 'channel_join',
+2018-05-25T15:06:31.536488+00:00 app[web.1]: ts: '1527260791.000283',
+2018-05-25T15:06:31.536489+00:00 app[web.1]: channel: 'C65C5RZU0',
+2018-05-25T15:06:31.536491+00:00 app[web.1]: event_ts: '1527260791.000283',
+2018-05-25T15:06:31.536492+00:00 app[web.1]: channel_type: 'channel' },
+2018-05-25T15:06:31.536494+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:06:31.536495+00:00 app[web.1]: event_id: 'EvAVRJ66HX',
+2018-05-25T15:06:31.536498+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+2018-05-25T15:06:31.536627+00:00 app[web.1]: Not implemented yet - joinChannel
+2018-05-25T15:06:31.536497+00:00 app[web.1]: event_time: 1527260791,
+
+2018-05-25T15:06:31.580981+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:06:31.580984+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.580986+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-05-25T15:06:31.580988+00:00 app[web.1]: event:
+2018-05-25T15:06:31.580990+00:00 app[web.1]: { user: 'UAVM2T464',
+2018-05-25T15:06:31.580992+00:00 app[web.1]: text: '<@UAVM2T464> has joined the channel',
+2018-05-25T15:06:31.580994+00:00 app[web.1]: type: 'message',
+2018-05-25T15:06:31.580997+00:00 app[web.1]: ts: '1527260791.000300',
+2018-05-25T15:06:31.580999+00:00 app[web.1]: channel: 'C6659GY13',
+2018-05-25T15:06:31.580995+00:00 app[web.1]: subtype: 'channel_join',
+2018-05-25T15:06:31.581000+00:00 app[web.1]: event_ts: '1527260791.000300',
+2018-05-25T15:06:31.581002+00:00 app[web.1]: channel_type: 'channel' },
+2018-05-25T15:06:31.581003+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:06:31.581005+00:00 app[web.1]: event_id: 'EvAW96FQ4T',
+2018-05-25T15:06:31.581006+00:00 app[web.1]: event_time: 1527260791,
+2018-05-25T15:06:31.581008+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+2018-05-25T15:06:31.581014+00:00 app[web.1]: Not implemented yet - joinChannel
+
+
+
+------------------
+MESSAGE TO SLACK
+------------------
+
+2018-05-25T15:09:47.634188+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:09:47.634202+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:09:47.634204+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-05-25T15:09:47.634206+00:00 app[web.1]: event:
+2018-05-25T15:09:47.634207+00:00 app[web.1]: { type: 'message',
+2018-05-25T15:09:47.634214+00:00 app[web.1]: text: 'hello',
+2018-05-25T15:09:47.634215+00:00 app[web.1]: ts: '1527260987.000431',
+2018-05-25T15:09:47.634217+00:00 app[web.1]: channel: 'C6659GY13',
+2018-05-25T15:09:47.634209+00:00 app[web.1]: user: 'UAVM2T464',
+2018-05-25T15:09:47.634218+00:00 app[web.1]: event_ts: '1527260987.000431',
+2018-05-25T15:09:47.634220+00:00 app[web.1]: channel_type: 'channel' },
+2018-05-25T15:09:47.634222+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:09:47.634224+00:00 app[web.1]: event_id: 'EvAW992SM9',
+2018-05-25T15:09:47.634226+00:00 app[web.1]: event_time: 1527260987,
+2018-05-25T15:09:47.634228+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+
+
+
+
+
