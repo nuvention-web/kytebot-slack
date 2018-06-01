@@ -44,7 +44,8 @@ app.post('/activity', function(req, res) {
 			}
 			else if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'team_join') {
 				// Not sure this is the right key for new_user being added to the slack
-				addUser(req.body);
+				// addUser(req.body);
+				console.log('A new member joined the team');
 			}
 			else if (req.body.event.hasOwnProperty('subtype') && req.body.event.subtype == 'file_share') {
 				addFile(req.body);
@@ -68,8 +69,6 @@ app.post('/options-load-endpoint', function(req, res) {
 
 });
 
-
-
 function newChannel(body) {
 	var new_triad = new Triad({ triadName: body.event.channel.name,
 								channel: body.event.channel.id,
@@ -79,11 +78,31 @@ function newChannel(body) {
 								mentor1Messages: 0,
 								mentor2Messages: 0,
 								menteeMessages: 0});
-	new_triad.save(function (err) {
-	  if (err) {
-	  	console.log("Error in saving new triad to db", err);
-	  }
+
+	User.findOne({'user': body.event.channel.creator}, (err, user) => {
+		if (err) {
+			console.log("Error in finding User for new channel", err)
+		}
+		if (user) {
+			if (user.type === "Industry") {
+				new_triad.mentor1 = user.user;
+			}
+			else if (user.type === "College") {
+				new_triad.mentor2 = user.user;
+			}
+			else {
+				// It was the mentee
+				new_triad.mentee = user.user;
+			}
+		}
+		new_triad.save(function (err) {
+			if (err) {
+				console.log("Error in saving new triad to db", err);
+			}
+		});
 	});
+
+	
 }
 
 function addFile(body) {
@@ -91,9 +110,36 @@ function addFile(body) {
 }
 
 function joinChannel(body) {
-	// add new user to the channel
-	// Check type
-	console.log('Not implemented yet - joinChannel');
+	Triad.findOne({'channel': body.event.channel}, (err, triad) => {
+		if (err) {
+			console.log("Error in finding Triad for adding a new member to a triad", err)
+		}
+		if (triad) {
+			// Look at user id and add to the correct mentor/mentee
+			User.findOne({'user': body.event.user}, (err, user) => {
+				if (err) {
+					console.log("Error in finding User for new channel", err)
+				}
+				if (user) {
+					if (user.type === "Industry" && triad.mentor1 !== "") {
+						triad.mentor1 = user.user;
+					}
+					else if (user.type === "College" && triad.mentor2 !== "") {
+						triad.mentor2 = user.user;
+					}
+					else if (triad.mentee !== "") {
+						// It was the mentee
+						triad.mentee = user.user;
+					}
+				}
+				triad.save(function (err) {
+					if (err) {
+						console.log("Error in saving triad to db for new user", err);
+					}
+				});
+			});
+		}
+	});
 }
 
 // Someone new is added to slack
@@ -102,17 +148,21 @@ function addUser(body) {
 	console.log('Not implemented yet - addMember');
 }
 
+
+// Function that checks the time on the message at 9 and 9??? And then reminds them to send a message if they haven't yet.
+// Do this to all users. Need to look into sending push notifications in this way
+
 function triadMessage(body) {
-	Triad.findOne({'channel': body.channel}, (err, triad) => {
+	Triad.findOne({'channel': body.event.channel}, (err, triad) => {
 		if (err) {
 			console.log("Error in finding Triad", err)
 		}
 		if (triad) {
 			// Look at user id and add to the correct mentor/mentee
-			if (user.user = triad.mentor1) {
+			if (body.event.user = triad.mentor1) {
 				triad.mentor1Messages = triad.mentor1Messages + 1;
 			}
-			else if (user.user = triad.mentor2) {
+			else if (body.event.user = triad.mentor2) {
 				triad.mentor2Messages = triad.mentor2Messages + 1;
 			}
 			else {
@@ -129,11 +179,12 @@ function triadMessage(body) {
 }
 
 function handleMessage(body) {
-	User.findOne({'user': body.user}, (err, user) => {
+	User.findOne({'user': body.event.user}, (err, user) => {
 		if (err) {
 			console.log("Error in finding User", err)
 		}
 		if (user) {
+			console.log('there was a user');
 			user.totalMessages = user.totalMessages + 1;
 			user.messages = user.messages + 1;
 			user.save((err) => {
@@ -153,9 +204,12 @@ function handleMessage(body) {
 
 
 // For next dev slice:
-// app.post('/visualize', function(req, res) {
+app.post('/report', function(req, res) {
+	// The one parameter we have is the triad name
 
-//  });
+	// Visualize the data
+
+ });
 
 //====MONGOOSE CONNECT===//
 mongoose.connect(url, function (err, db) {

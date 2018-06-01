@@ -1,3 +1,19 @@
+------------------
+FOR TESTING
+------------------
+
+A MESSAGE IN GENERAL
+
+curl --header "Content-Typeapplication/json"   --request POST   --data '{"event":{"type":"message", "user":"U6604NYP5", "text":"test message"}}'   http://localhost:4000/activity
+
+A MESSAGE IN TRIAD
+
+curl --header "Content-Typeapplication/json"   --request POST   --data '{"event":{"type":"message", "user":"U6604NYP5", "text":"test message", "channel": "CAZS8A0MT"}}'   http://localhost:4000/activity
+
+
+
+
+
 
 ------------------
 NEW USER TO SLACK
@@ -73,7 +89,6 @@ NEW USER TO SLACK
 2018-05-25T15:06:31.581014+00:00 app[web.1]: Not implemented yet - joinChannel
 
 
-
 ------------------
 MESSAGE TO SLACK
 ------------------
@@ -94,6 +109,52 @@ MESSAGE TO SLACK
 2018-05-25T15:09:47.634226+00:00 app[web.1]: event_time: 1527260987,
 2018-05-25T15:09:47.634228+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
 
+
+-------------------------
+A CHANNEL/TRIAD IS MADE
+-------------------------
+
+2018-06-01T00:32:34.784506+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-06-01T00:32:34.784529+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-06-01T00:32:34.784531+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-06-01T00:32:34.784533+00:00 app[web.1]: event:
+2018-06-01T00:32:34.784534+00:00 app[web.1]: { type: 'channel_created',
+2018-06-01T00:32:34.784536+00:00 app[web.1]: channel:
+2018-06-01T00:32:34.784537+00:00 app[web.1]: { id: 'CAZS8A0MT',
+2018-06-01T00:32:34.784539+00:00 app[web.1]: is_channel: true,
+2018-06-01T00:32:34.784540+00:00 app[web.1]: name: 'test-triad',
+2018-06-01T00:32:34.784542+00:00 app[web.1]: name_normalized: 'test-triad',
+2018-06-01T00:32:34.784544+00:00 app[web.1]: created: 1527813154,
+2018-06-01T00:32:34.784546+00:00 app[web.1]: creator: 'U6604NYP5',
+2018-06-01T00:32:34.784547+00:00 app[web.1]: is_shared: false,
+2018-06-01T00:32:34.784549+00:00 app[web.1]: is_org_shared: false },
+2018-06-01T00:32:34.784551+00:00 app[web.1]: event_ts: '1527813154.000174' },
+2018-06-01T00:32:34.784552+00:00 app[web.1]: type: 'event_callback',
+2018-06-01T00:32:34.784554+00:00 app[web.1]: event_id: 'EvAZ1PU53J',
+2018-06-01T00:32:34.784555+00:00 app[web.1]: event_time: 1527813154,
+2018-06-01T00:32:34.784557+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+
+------------------------------
+A MEMBER JOINS A CHANNEL/TRIAD
+------------------------------
+
+2018-06-01T01:16:21.801055+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-06-01T01:16:21.801770+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-06-01T01:16:21.801774+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-06-01T01:16:21.801777+00:00 app[web.1]: event:
+2018-06-01T01:16:21.801779+00:00 app[web.1]: { user: 'UAVM2T464',
+2018-06-01T01:16:21.801780+00:00 app[web.1]: inviter: 'U6604NYP5',
+2018-06-01T01:16:21.801783+00:00 app[web.1]: text: '<@UAVM2T464> has joined the channel',
+2018-06-01T01:16:21.801784+00:00 app[web.1]: type: 'message',
+2018-06-01T01:16:21.801786+00:00 app[web.1]: subtype: 'channel_join',
+2018-06-01T01:16:21.801788+00:00 app[web.1]: ts: '1527815781.000192',
+2018-06-01T01:16:21.801790+00:00 app[web.1]: channel: 'CAZS8A0MT',
+2018-06-01T01:16:21.801792+00:00 app[web.1]: event_ts: '1527815781.000192',
+2018-06-01T01:16:21.801794+00:00 app[web.1]: channel_type: 'channel' },
+2018-06-01T01:16:21.801795+00:00 app[web.1]: type: 'event_callback',
+2018-06-01T01:16:21.801797+00:00 app[web.1]: event_id: 'EvAZG0MJ68',
+2018-06-01T01:16:21.801799+00:00 app[web.1]: event_time: 1527815781,
+2018-06-01T01:16:21.801801+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
 
 
 

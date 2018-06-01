@@ -34,6 +34,10 @@ const userSchema = new Schema({
   type: {
     type: [mongoose.Schema.Types.Mixed],
     required: true,
+  },
+  lastMessage: {
+    type: [mongoose.Schema.Types.Mixed],
+    required: true,
   }
 })
 
