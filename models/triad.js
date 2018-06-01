@@ -34,6 +34,18 @@ const triadSchema = new Schema({
   menteeMessages: {
     type: mongoose.Schema.Types.Mixed,
     required: true
+  },
+  lastMessageMentor1: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  lastMessageMentor2: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  lastMessageMentee: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
   }
 })
 

@@ -57,13 +57,9 @@ app.post('/activity', function(req, res) {
 		default:
 			console.log('The action is not something we are storing in the database')
 	}
-	res.json({'challenge': req.body.challenge});
+	//res.json({'challenge': req.body.challenge});
+	res.json(req.body)
  });
-
-app.post('/action-endpoint', function(req, res) { 
-	// Will receive a POST request when the button has been responded to
-	// if the callback is mentor_or_mentee then addUser() for whatever they responded with
-});
 
 app.post('/options-load-endpoint', function(req, res) { 
 
@@ -90,7 +86,7 @@ function newChannel(body) {
 			else if (user.type === "College") {
 				new_triad.mentor2 = user.user;
 			}
-			else {
+			else if (user.type === "High School") {
 				// It was the mentee
 				new_triad.mentee = user.user;
 			}
@@ -105,10 +101,6 @@ function newChannel(body) {
 	
 }
 
-function addFile(body) {
-	console.log('Not implemented yet - addFile');
-}
-
 function joinChannel(body) {
 	Triad.findOne({'channel': body.event.channel}, (err, triad) => {
 		if (err) {
@@ -118,16 +110,17 @@ function joinChannel(body) {
 			// Look at user id and add to the correct mentor/mentee
 			User.findOne({'user': body.event.user}, (err, user) => {
 				if (err) {
-					console.log("Error in finding User for new channel", err)
+					console.log("Error in finding User for new channel", err);
 				}
+				console.log(user);
 				if (user) {
-					if (user.type === "Industry" && triad.mentor1 !== "") {
+					if (user.type === "Industry" && triad.mentor1 === "") {
 						triad.mentor1 = user.user;
 					}
-					else if (user.type === "College" && triad.mentor2 !== "") {
+					else if (user.type === "College" && triad.mentor2 === "") {
 						triad.mentor2 = user.user;
 					}
-					else if (triad.mentee !== "") {
+					else if (user.type === "High School" && triad.mentee === "") {
 						// It was the mentee
 						triad.mentee = user.user;
 					}
@@ -148,6 +141,11 @@ function addUser(body) {
 	console.log('Not implemented yet - addMember');
 }
 
+app.post('/action-endpoint', function(req, res) { 
+	// Will receive a POST request when the button has been responded to
+	// if the callback is mentor_or_mentee then addUser() for whatever they responded with
+});
+
 
 // Function that checks the time on the message at 9 and 9??? And then reminds them to send a message if they haven't yet.
 // Do this to all users. Need to look into sending push notifications in this way
@@ -159,10 +157,10 @@ function triadMessage(body) {
 		}
 		if (triad) {
 			// Look at user id and add to the correct mentor/mentee
-			if (body.event.user = triad.mentor1) {
+			if (body.event.user === triad.mentor1) {
 				triad.mentor1Messages = triad.mentor1Messages + 1;
 			}
-			else if (body.event.user = triad.mentor2) {
+			else if (body.event.user === triad.mentor2) {
 				triad.mentor2Messages = triad.mentor2Messages + 1;
 			}
 			else {
@@ -184,7 +182,6 @@ function handleMessage(body) {
 			console.log("Error in finding User", err)
 		}
 		if (user) {
-			console.log('there was a user');
 			user.totalMessages = user.totalMessages + 1;
 			user.messages = user.messages + 1;
 			user.save((err) => {
@@ -195,6 +192,14 @@ function handleMessage(body) {
 			triadMessage(body);
 		}
 	});
+}
+
+function addFile(body) {
+	console.log('Not implemented yet - addFile');
+}
+
+function addLink(body) {
+	console.log('Not implemented yet - addLink');
 }
 
 
@@ -208,6 +213,8 @@ app.post('/report', function(req, res) {
 	// The one parameter we have is the triad name
 
 	// Visualize the data
+	// Can expect the triad name as an argument - if not then we get all the triads info
+	// This webhook is hooked up to slack, we just need to send a response with the right data
 
  });
 
