@@ -19,7 +19,7 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"even
 
 A NEW TRIAD IS MADE
 
-curl --header "Content-Type: application/json"   --request POST   --data '{"event":{"type":"channel_created" "channel": {"name": "new-triad", "creator": "U6604NYP5"}}}'   http://localhost:4000/activity
+curl --header "Content-Type: application/json"   --request POST   --data '{"event":{"type":"channel_created", "channel": {"name": "new-triad", "creator": "U6604NYP5"}}}'   http://localhost:4000/activity
 
 
 
