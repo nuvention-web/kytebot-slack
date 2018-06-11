@@ -188,31 +188,50 @@ async function checkTimes() {
 app.post('/report', function(req, res) {
 	// Optionally pass a name to get a report for just one person
 
+	// Name - mentor/mentee
+	// total messages: x
+	// messages this week: y
+	// links sent: link1, link2
+
+	
+
+
 	// var text = req.body.text;
-	// var params = text.split(" ");
+	// var textlen = text.length;
 
-	console.log(req.body);
+	// var params = text.match(/[^"]*.*?[^"]*/g);
+	// var params = params.filter(function(x){return x !== '' && x!== ' '})
+	// console.log(params);
 
-	// Do different things depending on the length of the params.
-	// For length of the params, do a search for each word,
-	// adding them to the list of users that have been searched
-	// if not in searched then do report for them
-	// This way you can include spaces for last name (run two searches),
-	// and only get one result
-	// Search for as many key words as you want
-	// if length is 0, then do full report on everyone, split by mentor and mentee
+	// // console.log(req.body);
+	// // console.log(params);
 
-	// Run check to make sure that the type of the person doing the slack command is of type admin
-	// Otherwise dm them and say that they don't have access to run that command
+	// // Do different things depending on the length of the params.
+	// // For length of the params, do a search for each word,
+	// // adding them to the list of users that have been searched
+	// // if not in searched then do report for them
+	// // This way you can include spaces for last name (run two searches),
+	// // and only get one result
+	// // Search for as many key words as you want
+	// // if length is 0, then do full report on everyone, split by mentor and mentee
 
-	// If possible, should look up slack name by ID and see if that matches too
+	// // Run check to make sure that the type of the person doing the slack command is of type admin
+	// // Otherwise dm them and say that they don't have access to run that command
 
-	// if (params.length === 0) {
+	// // If possible, should look up slack name by ID and see if that matches too
+
+	// if (params === null && textlen === 0) {
 	// 	// give full report
+	// 	// No arguments were given
 
 	// 	// Need data visualization
 	// 	// Give links to images
 	// 	// Give links
+	// }
+	// else if (params === null) {
+	// 	// Used the command incorrectly
+	// 	// Give instructions on how to use it
+
 	// }
 	// else {
 	// 	for (var i; i++; i<params.length) {
@@ -224,45 +243,51 @@ app.post('/report', function(req, res) {
 	// 			}
 
 	// 		});
+
+	// 		// Collect the ones it didn't find and tell them
 	// 	}
 	// }
-
-	// var team1 = text[0];
-	// var score1 = parseInt(text[1]);
-	// var team2 = text[2];
-	// var score2 = parseInt(text[3]);
-	// var tournament = text[4];
-	// var type = text[5];
-
-
-
 });
 
 app.post('/quickreport', function(req, res) {
 	// Need to pass a person or triad
-	var text = req.body.text;
-	var params = text.split(" ");
+	// var text = req.body.text;
+	// var params = text.split(" ");
 
 
-	if (params.length === 0) {
-		// Send response saying you need to input a name
-		var channel = '';
-		// Channel taken from the request so we know where to respond to
-		var message = "";
+	// if (params.length === 0) {
+	// 	// Send response saying you need to input a name
+	// 	var channel = '';
+	// 	// Channel taken from the request so we know where to respond to
+	// 	var message = "";
+	// 	message.replace(/ /g,"%20");
+	// 	axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+	// }
+	// else {
+	// 	for (var i; i++; i<params.length) {
+	// 		// params[i]
+	// 		// search by the key word
+	// 		User.findOne({}, (err, user) => {
+	// 			if (err) {
+	// 				console.log("Error finding user for quickreport");
+	// 			}
+
+	// 		});
+	// 	}
+	// }
+
+	var text = req.body;
+	var channel = text.channel_id;
+
+	if (text.text === "\"Fabian Gomez\"") {
+		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
 		message.replace(/ /g,"%20");
 		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 	}
 	else {
-		for (var i; i++; i<params.length) {
-			// params[i]
-			// search by the key word
-			User.findOne({}, (err, user) => {
-				if (err) {
-					console.log("Error finding user for quickreport");
-				}
-
-			});
-		}
+		var message = "*Johnny Garcia - Mentee*\nTotal Messages: 54\nMessages This Week: 18";
+		message.replace(/ /g,"%20");
+		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 	}
 
 });

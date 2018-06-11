@@ -21,6 +21,10 @@ A NEW TRIAD IS MADE
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"event":{"type":"channel_created", "channel": {"name": "new-triad", "creator": "U6604NYP5"}}}'   http://localhost:4000/activity
 
+SLASH COMMAND SENT
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"\"name one\" \"name two\"", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/report
+
 
 
 2018-06-01T00:32:34.784506+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
@@ -185,6 +189,23 @@ A MEMBER JOINS A CHANNEL/TRIAD
 2018-06-01T01:16:21.801797+00:00 app[web.1]: event_id: 'EvAZG0MJ68',
 2018-06-01T01:16:21.801799+00:00 app[web.1]: event_time: 1527815781,
 2018-06-01T01:16:21.801801+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+
+------------------------------
+A SLASH COMMAND - REPORT
+------------------------------
+
+team_id: 'T6659GWTX',
+2018-06-11T17:10:13.748022+00:00 app[web.1]: team_domain: 'slack-tests-group',
+2018-06-11T17:10:13.748006+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-06-11T17:10:13.748023+00:00 app[web.1]: channel_id: 'C6659GY13',
+2018-06-11T17:10:13.748024+00:00 app[web.1]: channel_name: 'general',
+2018-06-11T17:10:13.748028+00:00 app[web.1]: command: '/report',
+2018-06-11T17:10:13.748026+00:00 app[web.1]: user_id: 'U6604NYP5',
+2018-06-11T17:10:13.748027+00:00 app[web.1]: user_name: 'gabe',
+2018-06-11T17:10:13.748029+00:00 app[web.1]: text: '“name one” “name two”',
+2018-06-11T17:10:13.748031+00:00 app[web.1]: response_url:
+2018-06-11T17:10:13.748033+00:00 app[web.1]: 'https://hooks.slack.com/commands/T6659GWTX/378801432576/jpr4hBTiUy5o9Grnfgil8gfM',
+2018-06-11T17:10:13.748035+00:00 app[web.1]: trigger_id: '379499894162.210179574949.03d4ac766b11d8feaec96d62713a4cc7' }
 
 
 
