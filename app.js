@@ -275,26 +275,20 @@ app.post('/quickreport', function(req, res) {
 	// 		});
 	// 	}
 	// }
-	axios.post(responseURL, {text: "a simple response"});
 
 	var text = req.body;
 	var channel = text.channel_id;
-	var responseURL = text.response_url;
 	console.log(text.text);
 
 	if (text.text === "\"Fabian Gomez\"" || text.text === "“Fabian Gomez”") {
-		// var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
+		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
 
-		 var body = {
-	        response_type: "in_channel",
-	        "attachments": [
-	          {
-	            "text": "Location: Gabe"
-	          }
-	        ]
-	      };
+		var body = {
+			response_type: "in_channel",
+			"text": message
+		};
 
-	      res.send(body);
+		res.send(body);
 
 		// axios.post(responseURL, 
 		// 	{"response_type": "in_channel",
@@ -306,8 +300,15 @@ app.post('/quickreport', function(req, res) {
 	}
 	else {
 		var message = "*Johnny Garcia - Mentee*\nTotal Messages: 54\nMessages This Week: 18";
-		message.replace(/ /g,"%20");
-		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+		// message.replace(/ /g,"%20");
+		// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+		
+		var body = {
+			response_type: "in_channel",
+			"text": message
+		};
+
+		res.send(body);
 	}
 
 });
