@@ -278,6 +278,7 @@ app.post('/quickreport', function(req, res) {
 
 	var text = req.body;
 	var channel = text.channel_id;
+	console.log(text.text);
 
 	if (text.text === "\"Fabian Gomez\"") {
 		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
