@@ -38,6 +38,14 @@ const userSchema = new Schema({
   lastMessage: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
+  },
+  directMessage: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  dmChannel: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
   }
 })
 

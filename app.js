@@ -9,6 +9,13 @@ const Triad = require('./models/triad.js')
 const app = express();
 const url = 'mongodb://admin:kyteadmin@ds231070.mlab.com:31070/kyte-slack';
 const axios = require('axios');
+const bot_token = 'xoxb-210179574949-367778535666-Tk3dBc3tjvW9amgQG5gc9UyE';
+const time_to_remind = 1000 * 60 * 60 * 12 * 24 * 2;
+// Send reminder if haven't talked in more than 2 days
+const time_to_check = 1000 * 60 * 60;
+// Check every hour
+
+// 1000 * 60 * 60 * 12 * 24 * 2
 // const messages = require('./messages');
 
 // SLACK TESTS TOKEN FOR SENDING DMS
@@ -30,6 +37,13 @@ const axios = require('axios');
 
 // Different authentication for bot
 // xoxb-210179574949-367778535666-Tk3dBc3tjvW9amgQG5gc9UyE
+
+
+// curl --header "Content-Type: application/json" --request POST --data '{ "ok": true, "channel": "C6659GY13", "ts": "1528214812.000555", "message": { "text": "a direct message", "username": "Slack API Tester", "bot_id": "BB1JA71SR", "type": "message", "subtype": "bot_message", "ts": "1528214812.000555"}}' https://slack.com/api/chat.postMessage?token=xoxp-210179574949-210004780787-375259193188-8296155003a4cb704a1906f513f6ad0b&channel=C6659GY13&text=A%20direct%20message&pretty=1
+
+
+
+
 
 // For cors
 app.use(function(req, res, next) {
@@ -85,59 +99,91 @@ app.post('/options-load-endpoint', function(req, res) {
 
 });
 
-let checkActivity = setInterval(checkTimes, 1000 * 10);
+let checkActivity = setInterval(checkTimes, time_to_check);
 // 1000 * 60 * 60 * 24 checks once a day * 2 would be every two days
 // let checkActivity = setInterval(checkTimes, 1000 * 60 * 60 * 12);
 // Checking every 12 hours
 
-function checkTimes() {
+
+// Slack command that lets you check on an individual person and a pair:
+
+
+async function newDirectMessage(userID) {
+	return new Promise((resolve, reject) => {
+
+		// Closure to make stuff available
+		function addChannelToUser(data) {
+			User.findOne({'user':userID}, (err, user) => {
+				if (err) {
+					console.log("error finding user when opening new dm");
+					reject(Error("There was an error finding the user"));
+				}
+				user.dmChannel = data.channel.id;
+				user.directMessage = true;
+
+				user.save((err) => {
+					if (err) {
+						console.log('Error saving user for new dm channel');
+					}
+				});
+
+				resolve("Stuff worked!");
+			});
+		}
+
+		var request = 'https://slack.com/api/im.open?token=' + bot_token + '&user=' + userID + '&pretty=1';
+		var axiosreq = axios.post(request).then((res) => {addChannelToUser(res.data)});
+		
+	});
+}
+
+function sendReminder(key, message) {
 	var currentTime = (new Date).getTime();
+
+	User.findOne({'user': key}, (err, user) => {
+		if (err) {
+			console.log("Error finding user from triad on schedule");
+		}
+		if (user.directMessage === false) {
+			console.log("A new dm channel was started for " + user.user);
+			console.log(user.user + ' was reminded to send a message to their mentor/mentee at ' + currentTime);
+			message.replace(/ /g,"%20");
+			newDirectMessage(user.user).then(axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + user.dmChannel + '&text=' + message + '&pretty=1'));
+		}
+		else {
+			console.log(user.user + ' was reminded to send a message to their mentor/mentee at ' + currentTime);
+			message.replace(/ /g,"%20");
+			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + user.dmChannel + '&text=' + message + '&pretty=1');
+		}
+	});
+}
+
+async function checkTimes() {
+	var currentTime = (new Date).getTime();
+
 	Triad.find({}, (err, triads) => {
 		if (err) {
 			console.log("Error in finding all triads");
 		}
 		if (triads) {
 			for (var i = 0; i < triads.length; i++) {
-				if (currentTime - triads[i].lastMessageMentor1 > 1000 ) {
-					// 1000 * 60 * 60 * 12 * 24 * 2
-					// Send message to the mentor1 to be more active in their triad
-					console.log(triads[i].mentor1 + ' was reminded to send a message to their triad at ' + currentTime);
+				// 1000 * 60 * 60 * 12 * 24 * 2
+				// Send message to the mentor1 to be more active in their triad
+				if (currentTime - triads[i].lastMessageMentor1 > time_to_remind && triads[i].mentor1) {
+					sendReminder(triads[i].mentor1, "Send a message to your mentee! You haven't been active for a while");
 				}
-				if (currentTime - triads[i].lastMessageMentor2 > 1000 ) {
-					// 1000 * 60 * 60 * 12 * 24 * 2
-					// Send message to the mentor1 to be more active in their triad
-					console.log(triads[i].mentor2 + ' was reminded to send a message to their triad at ' + currentTime);
+				if (currentTime - triads[i].lastMessageMentor2 > time_to_remind && triads[i].mentor2) {
+					sendReminder(triads[i].mentor2, "Send a message to your mentee! You haven't been active for a while");
 				}
-				if (currentTime - triads[i].lastMessageMentee > 1000 ) {
-					// 1000 * 60 * 60 * 12 * 24 * 2
-					// Send message to the mentor1 to be more active in their triad
-					console.log(triads[i].mentee + ' was reminded to send a message to their triad at ' + currentTime);
+				if (currentTime - triads[i].lastMessageMentee > time_to_remind && triads[i].mentee) {
+					sendReminder(triads[i].mentee, "Send a message to your mentor! You haven't been active for a while");
 				}
 				
 				// Check each member time and compare it to the current epoch time
 
 			}
-			// User.find({}, (err, users) => {
-			// 	if (err) {
-			// 		console.log("Error finding all the users");
-			// 	}
-			// 	if (users) {
-			// 		for (var i = 0; i < users.length; i++) {
-			// 			console.log(users[i]);
-			// 			// Check each member time and compare it to the current epoch time
-
-			// 		}
-			// 	}
-			// });
 		}
 	});
-
-	// MODIFY MESSAGES TO RECORD TIMES
-	// check the seconds on every user within a triad
-	// Check triad first
-	// If have not been active for certain period of time, then send them a personal message from the application reminding them to be more active in their triad. 
-	// If they have not been active in triad, add them to array
-	// If have been 
 }
 
 function newChannel(body) {
