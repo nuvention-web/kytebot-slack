@@ -283,8 +283,12 @@ app.post('/quickreport', function(req, res) {
 
 	if (text.text === "\"Fabian Gomez\"" || text.text === "“Fabian Gomez”") {
 		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
-		axios.post(responseURL, {"response_type": "in_channel",
-	    "text": message});
+
+		axios.post(responseURL, 
+			{"response_type": "in_channel",
+	    	"text": message},
+	    	{ "headers": {
+            	"Content-Type": "application/json"}});
 		// message.replace(/ /g,"%20");
 		// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 	}
