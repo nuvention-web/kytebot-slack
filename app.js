@@ -185,7 +185,7 @@ async function checkTimes() {
 
 // Slack command that lets you check on an individual person and a pair:
 
-app.post('/slack/report', function(req, res) {
+app.post('/report', function(req, res) {
 	// Optionally pass a name to get a report for just one person
 
 	// var text = req.body.text;
@@ -238,7 +238,7 @@ app.post('/slack/report', function(req, res) {
 
 });
 
-app.post('/slack/quickreport', function(req, res) {
+app.post('/quickreport', function(req, res) {
 	// Need to pass a person or triad
 	var text = req.body.text;
 	var params = text.split(" ");
