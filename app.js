@@ -10,10 +10,12 @@ const app = express();
 const url = 'mongodb://admin:kyteadmin@ds231070.mlab.com:31070/kyte-slack';
 const axios = require('axios');
 const bot_token = 'xoxb-210179574949-367778535666-Tk3dBc3tjvW9amgQG5gc9UyE';
-const time_to_remind = 1000 * 60 * 60 * 12 * 24 * 2;
+const time_to_remind = 1000 * 60 * 60 * 48;
 // Send reminder if haven't talked in more than 2 days
-const time_to_check = 1000 * 60 * 60;
-// Check every hour
+const time_to_check = 1000 * 60 * 60 * 24;
+// Check every 24 hours
+
+// For purposed of demo maybe make that every 5 minutes? Check every minute and send if more than 5??
 
 // 1000 * 60 * 60 * 12 * 24 * 2
 // const messages = require('./messages');
@@ -102,11 +104,6 @@ app.post('/options-load-endpoint', function(req, res) {
 let checkActivity = setInterval(checkTimes, time_to_check);
 // 1000 * 60 * 60 * 24 checks once a day * 2 would be every two days
 // let checkActivity = setInterval(checkTimes, 1000 * 60 * 60 * 12);
-// Checking every 12 hours
-
-
-// Slack command that lets you check on an individual person and a pair:
-
 
 async function newDirectMessage(userID) {
 	return new Promise((resolve, reject) => {
@@ -186,6 +183,90 @@ async function checkTimes() {
 	});
 }
 
+// Slack command that lets you check on an individual person and a pair:
+
+app.post('/slack/report', function(req, res) {
+	// Optionally pass a name to get a report for just one person
+
+	var text = req.body.text;
+	var params = text.split(" ");
+
+	// Do different things depending on the length of the params.
+	// For length of the params, do a search for each word,
+	// adding them to the list of users that have been searched
+	// if not in searched then do report for them
+	// This way you can include spaces for last name (run two searches),
+	// and only get one result
+	// Search for as many key words as you want
+	// if length is 0, then do full report on everyone, split by mentor and mentee
+
+	// Run check to make sure that the type of the person doing the slack command is of type admin
+	// Otherwise dm them and say that they don't have access to run that command
+
+	// If possible, should look up slack name by ID and see if that matches too
+
+	if (params.length === 0) {
+		// give full report
+
+		// Need data visualization
+		// Give links to images
+		// Give links
+	}
+	else {
+		for (var i; i++; i<params.length) {
+			// params[i]
+			// search by the key word
+			User.findOne({}, (err, user) => {
+				if (err) {
+					console.log("Error finding user for report");
+				}
+
+			});
+		}
+	}
+
+	// var team1 = text[0];
+	// var score1 = parseInt(text[1]);
+	// var team2 = text[2];
+	// var score2 = parseInt(text[3]);
+	// var tournament = text[4];
+	// var type = text[5];
+
+
+
+});
+
+app.post('/slack/quickreport', function(req, res) {
+	// Need to pass a person or triad
+	var text = req.body.text;
+	var params = text.split(" ");
+
+
+	if (params.length === 0) {
+		// Send response saying you need to input a name
+		var channel = '';
+		// Channel taken from the request so we know where to respond to
+		var message = "";
+		message.replace(/ /g,"%20");
+		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+	}
+	else {
+		for (var i; i++; i<params.length) {
+			// params[i]
+			// search by the key word
+			User.findOne({}, (err, user) => {
+				if (err) {
+					console.log("Error finding user for quickreport");
+				}
+
+			});
+		}
+	}
+
+});
+
+
+// New mentor group
 function newChannel(body) {
 	var new_triad = new Triad({ triadName: body.event.channel.name,
 								channel: body.event.channel.id,
@@ -312,7 +393,7 @@ function handleMessage(body) {
 			user.lastMessage = body.event_time;
 			user.save((err) => {
 				if (err) {
-			  		console.log("Error adding messagge info to mlab", err);
+			  		console.log("Error adding message info to mlab", err);
 			  	}
 			});
 			triadMessage(body);
