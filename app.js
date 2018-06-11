@@ -283,7 +283,18 @@ app.post('/quickreport', function(req, res) {
 	console.log(text.text);
 
 	if (text.text === "\"Fabian Gomez\"" || text.text === "“Fabian Gomez”") {
-		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
+		// var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
+
+		 var body = {
+	        response_type: "in_channel",
+	        "attachments": [
+	          {
+	            "text": "Location: Gabe"
+	          }
+	        ]
+	      };
+
+	      res.send(body);
 
 		// axios.post(responseURL, 
 		// 	{"response_type": "in_channel",
