@@ -188,8 +188,10 @@ async function checkTimes() {
 app.post('/slack/report', function(req, res) {
 	// Optionally pass a name to get a report for just one person
 
-	var text = req.body.text;
-	var params = text.split(" ");
+	// var text = req.body.text;
+	// var params = text.split(" ");
+
+	console.log(req.body);
 
 	// Do different things depending on the length of the params.
 	// For length of the params, do a search for each word,
@@ -205,25 +207,25 @@ app.post('/slack/report', function(req, res) {
 
 	// If possible, should look up slack name by ID and see if that matches too
 
-	if (params.length === 0) {
-		// give full report
+	// if (params.length === 0) {
+	// 	// give full report
 
-		// Need data visualization
-		// Give links to images
-		// Give links
-	}
-	else {
-		for (var i; i++; i<params.length) {
-			// params[i]
-			// search by the key word
-			User.findOne({}, (err, user) => {
-				if (err) {
-					console.log("Error finding user for report");
-				}
+	// 	// Need data visualization
+	// 	// Give links to images
+	// 	// Give links
+	// }
+	// else {
+	// 	for (var i; i++; i<params.length) {
+	// 		// params[i]
+	// 		// search by the key word
+	// 		User.findOne({}, (err, user) => {
+	// 			if (err) {
+	// 				console.log("Error finding user for report");
+	// 			}
 
-			});
-		}
-	}
+	// 		});
+	// 	}
+	// }
 
 	// var team1 = text[0];
 	// var score1 = parseInt(text[1]);
