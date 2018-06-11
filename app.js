@@ -281,7 +281,7 @@ app.post('/quickreport', function(req, res) {
 	console.log(text.text);
 
 	if (text.text === "\"Fabian Gomez\"" || text.text === "“Fabian Gomez”") {
-		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
+		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nAverage Rating:8\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
 
 		var body = {
 			response_type: "in_channel",
@@ -299,7 +299,7 @@ app.post('/quickreport', function(req, res) {
 		// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 	}
 	else {
-		var message = "*Johnny Garcia - Mentee*\nTotal Messages: 54\nMessages This Week: 18";
+		var message = "*Johnny Garcia - Mentee*\nTotal Messages: 54\nMessages This Week: 18\nSessions Attended: 1";
 		// message.replace(/ /g,"%20");
 		// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 		
