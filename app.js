@@ -304,7 +304,7 @@ function makeReport(name, res, channel) {
 app.post('/quickreport', function(req, res) {
 	var body = {
 		response_type: "in_channel",
-		"text": "OK"
+		"text": ""
 	};
 	res.send(body);
 
