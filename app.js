@@ -250,62 +250,67 @@ app.post('/report', function(req, res) {
 	}
 });
 
-function makeReport(name, res) {
+function makeReport(name, res, channel) {
 	User.findOne({name: { $regex: new RegExp(name, "gi"), $options: 'i' }}, (err, user) => {
-					if (err) {
-						console.log("Error finding user for quickreport");
-					}
-					if (user) {
-						var message = "*" + user.name;
-						if (user.type === "High School") {
-							message = message.concat(" - Mentee*\n");
-							message = message.concat("Total Messages: ");
-							message = message.concat(user.totalMessages);
-							message = message.concat("\nMessages This Week: ");
-							message = message.concat(user.messages);
-							message = message.concat("\nSessions Attended: ");
-							message = message.concat(user.sessionsAttended);
-						}
-						else {
-							message = message.concat(" - Mentor*\n");
-							message = message.concat("Total Messages: ");
-							message = message.concat(user.totalMessages);
-							message = message.concat("\nMessages This Week: ");
-							message = message.concat(user.messages);
-							message = message.concat("\nAverage Rating: ");
-							message = message.concat(user.averageRating);
-							message = message.concat("\nLinks Sent:");
-							for (var i = 0; i<user.links.length; i++) {
-								message = message.concat("\n\t");
-								message = message.concat(user.links[i]);
-							}
+		if (err) {
+			console.log("Error finding user for quickreport");
+		}
+		if (user) {
+			var message = "*" + user.name;
+			if (user.type === "High School") {
+				message = message.concat(" - Mentee*\n");
+				message = message.concat("Total Messages: ");
+				message = message.concat(user.totalMessages);
+				message = message.concat("\nMessages This Week: ");
+				message = message.concat(user.messages);
+				message = message.concat("\nSessions Attended: ");
+				message = message.concat(user.sessionsAttended);
+			}
+			else {
+				message = message.concat(" - Mentor*\n");
+				message = message.concat("Total Messages: ");
+				message = message.concat(user.totalMessages);
+				message = message.concat("\nMessages This Week: ");
+				message = message.concat(user.messages);
+				message = message.concat("\nAverage Rating: ");
+				message = message.concat(user.averageRating);
+				message = message.concat("\nLinks Sent:");
+				for (var i = 0; i<user.links.length; i++) {
+					message = message.concat("\n\t");
+					message = message.concat(user.links[i]);
+				}
 
-						}
+			}
 
-						var body = {
-							response_type: "in_channel",
-							"text": message
-						};
+			// var body = {
+			// 	response_type: "in_channel",
+			// 	"text": message
+			// };
 
-						res.send(body);
+			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 
-					}
-					else {
-						var message = "We weren't able to find anyone using the name " + name;
-						var body = {
-							response_type: "in_channel",
-							"text": message
-						};
-						res.send(body);
-					}
-
-				});
+		}
+		else {
+			var message = "We weren't able to find anyone using the name " + name;
+			// var body = {
+			// 	response_type: "in_channel",
+			// 	"text": message
+			// };
+			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+		}
+	});
 }
 
 app.post('/quickreport', function(req, res) {
+	var body = {
+		response_type: "in_channel",
+		"text": "OK"
+	};
+	res.send(body);
 
 	var text = req.body.text;
 	var textlen = text.length;
+	var channel = req.body.channel_id;
 
 	var params = text.match(/[^"]*.*?[^"]*/g);
 	var params = params.filter(function(x){return x !== '' && x!== ' '})
@@ -313,82 +318,31 @@ app.post('/quickreport', function(req, res) {
 	console.log(params);
 
 
-	if (params === null && textlen === 0) {
+	if (params.length === 0) {
 		// Send response saying you need to input a name
 		var message = "You need to specify a mentor or mentee to look for!";
-		var body = {
-			response_type: "in_channel",
-			"text": message
-		};
-		res.send(body);
+		// var body = {
+		// 	response_type: "in_channel",
+		// 	"text": message
+		// };
+		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+		// res.send(body);
 	}
 	else if (params === null) {
 		// Used the command incorrectly
 		// Give instructions on how to use it
 		var message = "There was an error with how you tried to use the command : ( Follow the pointers that come up when you type the command";
-		var body = {
-			response_type: "in_channel",
-			"text": message
-		};
-		res.send(body);
+		// var body = {
+		// 	response_type: "in_channel",
+		// 	"text": message
+		// };
+		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+		// res.send(body);
 	}
 	else {
 		// var seenIDs = [];
 		for (var i = 0; i<params.length; i++) {
-			makeReport(params[i], res);
-			// User.findOne({name: { $regex: new RegExp(params[i], "gi"), $options: 'i' }}, (err, user) => {
-			// 		if (err) {
-			// 			console.log("Error finding user for quickreport");
-			// 		}
-			// 		if (user) {
-			// 			var message = "*" + user.name;
-			// 			if (user.type === "High School") {
-			// 				message = message.concat(" - Mentee*\n");
-			// 				message = message.concat("Total Messages: ");
-			// 				message = message.concat(user.totalMessages);
-			// 				message = message.concat("\nMessages This Week: ");
-			// 				message = message.concat(user.messages);
-			// 				message = message.concat("\nSessions Attended: ");
-			// 				message = message.concat(user.sessionsAttended);
-			// 			}
-			// 			else {
-			// 				message = message.concat(" - Mentor*\n");
-			// 				message = message.concat("Total Messages: ");
-			// 				message = message.concat(user.totalMessages);
-			// 				message = message.concat("\nMessages This Week: ");
-			// 				message = message.concat(user.messages);
-			// 				message = message.concat("\nAverage Rating: ");
-			// 				message = message.concat(user.averageRating);
-			// 				message = message.concat("\nLinks Sent:");
-			// 				for (var i = 0; i<user.links.length; i++) {
-			// 					message = message.concat("\n\t");
-			// 					message = message.concat(user.links[i]);
-			// 				}
-
-			// 			}
-
-			// 			var body = {
-			// 				response_type: "in_channel",
-			// 				"text": message
-			// 			};
-
-			// 			res.send(body);
-
-			// 		}
-			// 		else {
-			// 			console.log(params);
-			// 			console.log(i);
-			// 			var message = "We weren't able to find anyone using the name " + params[i];
-			// 			var body = {
-			// 				response_type: "in_channel",
-			// 				"text": message
-			// 			};
-			// 			res.send(body);
-			// 		}
-
-			// 	});
-
-
+			makeReport(params[i], res, channel);
 			// // params[i]
 			// // search by the key word
 			// var phrases = params[i].split(" ");
