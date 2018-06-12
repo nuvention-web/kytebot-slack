@@ -46,7 +46,16 @@ const userSchema = new Schema({
   dmChannel: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
-  }
+  },
+  averageRating: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  sessionsAttended: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+
 })
 
 const User = mongoose.model('User', userSchema);

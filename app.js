@@ -13,6 +13,7 @@ const bot_token = 'xoxb-210179574949-367778535666-Tk3dBc3tjvW9amgQG5gc9UyE';
 const time_to_remind = 1000 * 60 * 60 * 48;
 // Send reminder if haven't talked in more than 2 days
 const time_to_check = 1000 * 60 * 60 * 24;
+// const time_to_check = 1000 * 10;
 // Check every 24 hours
 
 // For purposed of demo maybe make that every 5 minutes? Check every minute and send if more than 5??
@@ -151,11 +152,18 @@ function sendReminder(key, message) {
 			console.log(user.user + ' was reminded to send a message to their mentor/mentee at ' + currentTime);
 			message.replace(/ /g,"%20");
 			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + user.dmChannel + '&text=' + message + '&pretty=1');
+			var reminder = "Have you looked at those resources your mentor sent?";
+			reminder.replace(/ /g,"%20");
+			setTimeout(function () {
+				axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + user.dmChannel + '&text=' + reminder + '&pretty=1');
+		    }, 1000);
+			
 		}
 	});
 }
 
 async function checkTimes() {
+	// Need a check to make sure only one message is sent if they are in multiple groups
 	var currentTime = (new Date).getTime();
 
 	Triad.find({}, (err, triads) => {
@@ -164,19 +172,20 @@ async function checkTimes() {
 		}
 		if (triads) {
 			for (var i = 0; i < triads.length; i++) {
-				// 1000 * 60 * 60 * 12 * 24 * 2
-				// Send message to the mentor1 to be more active in their triad
+				console.log(i);
+					// 1000 * 60 * 60 * 12 * 24 * 2
+					// Send message to the mentor1 to be more active in their triad
 				if (currentTime - triads[i].lastMessageMentor1 > time_to_remind && triads[i].mentor1) {
-					sendReminder(triads[i].mentor1, "Send a message to your mentee! You haven't been active for a while");
+					sendReminder(triads[i].mentor1, "Send a message to your mentor! You haven't been active for a while.");
 				}
 				if (currentTime - triads[i].lastMessageMentor2 > time_to_remind && triads[i].mentor2) {
-					sendReminder(triads[i].mentor2, "Send a message to your mentee! You haven't been active for a while");
+					sendReminder(triads[i].mentor2, "Send a message to your mentee! You haven't been active for a while.");
 				}
 				if (currentTime - triads[i].lastMessageMentee > time_to_remind && triads[i].mentee) {
-					sendReminder(triads[i].mentee, "Send a message to your mentor! You haven't been active for a while");
+					sendReminder(triads[i].mentee, "Send a message to your mentor! You haven't been active for a while.");
 				}
-				
-				// Check each member time and compare it to the current epoch time
+					
+					// Check each member time and compare it to the current epoch time
 
 			}
 		}
@@ -188,128 +197,234 @@ async function checkTimes() {
 app.post('/report', function(req, res) {
 	// Optionally pass a name to get a report for just one person
 
-	// Name - mentor/mentee
-	// total messages: x
-	// messages this week: y
-	// links sent: link1, link2
+	var text = req.body.text;
+	var textlen = text.length;
 
-	
+	var params = text.match(/[^"]*.*?[^"]*/g);
+	var params = params.filter(function(x){return x !== '' && x!== ' '})
+	console.log(params);
 
-
-	// var text = req.body.text;
-	// var textlen = text.length;
-
-	// var params = text.match(/[^"]*.*?[^"]*/g);
-	// var params = params.filter(function(x){return x !== '' && x!== ' '})
+	// console.log(req.body);
 	// console.log(params);
 
-	// // console.log(req.body);
-	// // console.log(params);
+	// Do different things depending on the length of the params.
+	// For length of the params, do a search for each word,
+	// adding them to the list of users that have been searched
+	// if not in searched then do report for them
+	// This way you can include spaces for last name (run two searches),
+	// and only get one result
+	// Search for as many key words as you want
+	// if length is 0, then do full report on everyone, split by mentor and mentee
 
-	// // Do different things depending on the length of the params.
-	// // For length of the params, do a search for each word,
-	// // adding them to the list of users that have been searched
-	// // if not in searched then do report for them
-	// // This way you can include spaces for last name (run two searches),
-	// // and only get one result
-	// // Search for as many key words as you want
-	// // if length is 0, then do full report on everyone, split by mentor and mentee
+	// Run check to make sure that the type of the person doing the slack command is of type admin
+	// Otherwise dm them and say that they don't have access to run that command
 
-	// // Run check to make sure that the type of the person doing the slack command is of type admin
-	// // Otherwise dm them and say that they don't have access to run that command
+	// If possible, should look up slack name by ID and see if that matches too
 
-	// // If possible, should look up slack name by ID and see if that matches too
+	if (params === null && textlen === 0) {
+		// give full report
+		// No arguments were given
 
-	// if (params === null && textlen === 0) {
-	// 	// give full report
-	// 	// No arguments were given
+		// Need data visualization
+		// Give links to images
+		// Give links
+	}
+	else if (params === null) {
+		// Used the command incorrectly
+		// Give instructions on how to use it
 
-	// 	// Need data visualization
-	// 	// Give links to images
-	// 	// Give links
-	// }
-	// else if (params === null) {
-	// 	// Used the command incorrectly
-	// 	// Give instructions on how to use it
-
-	// }
-	// else {
-	// 	for (var i; i++; i<params.length) {
-	// 		// params[i]
-	// 		// search by the key word
-	// 		User.findOne({}, (err, user) => {
-	// 			if (err) {
-	// 				console.log("Error finding user for report");
-	// 			}
-
-	// 		});
-
-	// 		// Collect the ones it didn't find and tell them
-	// 	}
-	// }
-});
-
-app.post('/quickreport', function(req, res) {
-	// Need to pass a person or triad
-	// var text = req.body.text;
-	// var params = text.split(" ");
-
-
-	// if (params.length === 0) {
-	// 	// Send response saying you need to input a name
-	// 	var channel = '';
-	// 	// Channel taken from the request so we know where to respond to
-	// 	var message = "";
-	// 	message.replace(/ /g,"%20");
-	// 	axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
-	// }
-	// else {
-	// 	for (var i; i++; i<params.length) {
-	// 		// params[i]
-	// 		// search by the key word
-	// 		User.findOne({}, (err, user) => {
-	// 			if (err) {
-	// 				console.log("Error finding user for quickreport");
-	// 			}
-
-	// 		});
-	// 	}
-	// }
-
-	var text = req.body;
-	var channel = text.channel_id;
-	console.log(text.text);
-
-	if (text.text === "\"Fabian Gomez\"" || text.text === "“Fabian Gomez”") {
-		var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nAverage Rating:8\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
-
-		var body = {
-			response_type: "in_channel",
-			"text": message
-		};
-
-		res.send(body);
-
-		// axios.post(responseURL, 
-		// 	{"response_type": "in_channel",
-	 //    	"text": message},
-	 //    	{ "headers": {
-  //           	"Content-Type": "application/json"}}).then((res) => {console.log(res);});
-		// message.replace(/ /g,"%20");
-		// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 	}
 	else {
-		var message = "*Johnny Garcia - Mentee*\nTotal Messages: 54\nMessages This Week: 18\nSessions Attended: 1";
-		// message.replace(/ /g,"%20");
-		// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
-		
+		for (var i; i++; i<params.length) {
+			// params[i]
+			// search by the key word
+			User.findOne({}, (err, user) => {
+				if (err) {
+					console.log("Error finding user for report");
+				}
+
+			});
+
+			// Collect the ones it didn't find and tell them
+		}
+	}
+});
+
+function makeReport(name, res) {
+	User.findOne({name: { $regex: new RegExp(name, "gi"), $options: 'i' }}, (err, user) => {
+					if (err) {
+						console.log("Error finding user for quickreport");
+					}
+					if (user) {
+						var message = "*" + user.name;
+						if (user.type === "High School") {
+							message = message.concat(" - Mentee*\n");
+							message = message.concat("Total Messages: ");
+							message = message.concat(user.totalMessages);
+							message = message.concat("\nMessages This Week: ");
+							message = message.concat(user.messages);
+							message = message.concat("\nSessions Attended: ");
+							message = message.concat(user.sessionsAttended);
+						}
+						else {
+							message = message.concat(" - Mentor*\n");
+							message = message.concat("Total Messages: ");
+							message = message.concat(user.totalMessages);
+							message = message.concat("\nMessages This Week: ");
+							message = message.concat(user.messages);
+							message = message.concat("\nAverage Rating: ");
+							message = message.concat(user.averageRating);
+							message = message.concat("\nLinks Sent:");
+							for (var i = 0; i<user.links.length; i++) {
+								message = message.concat("\n\t");
+								message = message.concat(user.links[i]);
+							}
+
+						}
+
+						var body = {
+							response_type: "in_channel",
+							"text": message
+						};
+
+						res.send(body);
+
+					}
+					else {
+						var message = "We weren't able to find anyone using the name " + name;
+						var body = {
+							response_type: "in_channel",
+							"text": message
+						};
+						res.send(body);
+					}
+
+				});
+}
+
+app.post('/quickreport', function(req, res) {
+
+	var text = req.body.text;
+	var textlen = text.length;
+
+	var params = text.match(/[^"]*.*?[^"]*/g);
+	var params = params.filter(function(x){return x !== '' && x!== ' '})
+
+	console.log(params);
+
+
+	if (params === null && textlen === 0) {
+		// Send response saying you need to input a name
+		var message = "You need to specify a mentor or mentee to look for!";
 		var body = {
 			response_type: "in_channel",
 			"text": message
 		};
-
 		res.send(body);
 	}
+	else if (params === null) {
+		// Used the command incorrectly
+		// Give instructions on how to use it
+		var message = "There was an error with how you tried to use the command : ( Follow the pointers that come up when you type the command";
+		var body = {
+			response_type: "in_channel",
+			"text": message
+		};
+		res.send(body);
+	}
+	else {
+		// var seenIDs = [];
+		for (var i = 0; i<params.length; i++) {
+			makeReport(params[i], res);
+			// User.findOne({name: { $regex: new RegExp(params[i], "gi"), $options: 'i' }}, (err, user) => {
+			// 		if (err) {
+			// 			console.log("Error finding user for quickreport");
+			// 		}
+			// 		if (user) {
+			// 			var message = "*" + user.name;
+			// 			if (user.type === "High School") {
+			// 				message = message.concat(" - Mentee*\n");
+			// 				message = message.concat("Total Messages: ");
+			// 				message = message.concat(user.totalMessages);
+			// 				message = message.concat("\nMessages This Week: ");
+			// 				message = message.concat(user.messages);
+			// 				message = message.concat("\nSessions Attended: ");
+			// 				message = message.concat(user.sessionsAttended);
+			// 			}
+			// 			else {
+			// 				message = message.concat(" - Mentor*\n");
+			// 				message = message.concat("Total Messages: ");
+			// 				message = message.concat(user.totalMessages);
+			// 				message = message.concat("\nMessages This Week: ");
+			// 				message = message.concat(user.messages);
+			// 				message = message.concat("\nAverage Rating: ");
+			// 				message = message.concat(user.averageRating);
+			// 				message = message.concat("\nLinks Sent:");
+			// 				for (var i = 0; i<user.links.length; i++) {
+			// 					message = message.concat("\n\t");
+			// 					message = message.concat(user.links[i]);
+			// 				}
+
+			// 			}
+
+			// 			var body = {
+			// 				response_type: "in_channel",
+			// 				"text": message
+			// 			};
+
+			// 			res.send(body);
+
+			// 		}
+			// 		else {
+			// 			console.log(params);
+			// 			console.log(i);
+			// 			var message = "We weren't able to find anyone using the name " + params[i];
+			// 			var body = {
+			// 				response_type: "in_channel",
+			// 				"text": message
+			// 			};
+			// 			res.send(body);
+			// 		}
+
+			// 	});
+
+
+			// // params[i]
+			// // search by the key word
+			// var phrases = params[i].split(" ");
+			// for (var j = 0; j<phrases.length; j++) {
+				
+			// }
+				
+		}
+	}
+
+	// var text = req.body;
+	// var channel = text.channel_id;
+	// console.log(text.text);
+
+	// if (text.text === "\"Fabian Gomez\"" || text.text === "“Fabian Gomez”") {
+	// 	var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nAverage Rating:8\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
+
+	// 	var body = {
+	// 		response_type: "in_channel",
+	// 		"text": message
+	// 	};
+
+	// 	res.send(body);
+	// }
+	// else {
+	// 	var message = "*Johnny Garcia - Mentee*\nTotal Messages: 54\nMessages This Week: 18\nSessions Attended: 1";
+	// 	// message.replace(/ /g,"%20");
+	// 	// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
+		
+	// 	var body = {
+	// 		response_type: "in_channel",
+	// 		"text": message
+	// 	};
+
+	// 	res.send(body);
+	// }
 
 });
 
