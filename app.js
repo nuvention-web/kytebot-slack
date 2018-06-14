@@ -476,6 +476,7 @@ function handleMessage(body) {
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
 			console.log(user.links);
+			console.log(findLink(body));
 			if (findLink(body)) {
 				var links = extractLinks(body.event.text);
 				console.log(links);
