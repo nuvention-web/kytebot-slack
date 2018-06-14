@@ -287,6 +287,7 @@ function makeReport(name, res, channel) {
 					}
 				}
 				message = message.concat("\nFiles Sent:");
+				console.log(user.images);
 				if (user.images.length === 0) {
 					message = message.concat("\n\tNo files sent!");
 				}
@@ -507,6 +508,7 @@ function addFile(body) {
 			console.log("Error in finding User", err)
 		}
 		if (user) {
+			console.log(user);
 			user.totalMessages = user.totalMessages + 1;
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
