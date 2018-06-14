@@ -6,6 +6,8 @@ It tracks files, links, messages sent, the last time a message was sent (and by 
 
 To test it out, we've created a test slack for development. If you want to log into it, use the following information:
 
+https://join.slack.com/t/slack-tests-group/shared_invite/enQtMzgwNjIyNjM2MDY0LTExMjU5ZTNhYmVjOTNhZjUzZmU0ZWE1OThlMjRmYjBlMzRkNzBiMWYwNjM0MDg1YmE0ZDViN2RkYzRhYTNiOTM
+
 nuventiontest2018@outlook.com
 test2018
 

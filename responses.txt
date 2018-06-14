@@ -18,6 +18,8 @@ A LINK IN TRIAD
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "user":"U6604NYP5", "text":"<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test>", "channel": "CAZS8A0MT"}}'   http://localhost:4000/activity
 
+
+
 A NEW MEMBER TO A TRIAD
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"event":{"type":"message", "subtype": "channel_join", "channel": "CAZS8A0MT", "user":"UAVM2T464", "text":"test message", "channel": "CAZS8A0MT"}}'   http://localhost:4000/activity
