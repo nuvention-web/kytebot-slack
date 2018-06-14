@@ -152,11 +152,6 @@ function sendReminder(key, message) {
 			console.log(user.user + ' was reminded to send a message to their mentor/mentee at ' + currentTime);
 			message.replace(/ /g,"%20");
 			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + user.dmChannel + '&text=' + message + '&pretty=1');
-			var reminder = "Have you looked at those resources your mentor sent?";
-			reminder.replace(/ /g,"%20");
-			setTimeout(function () {
-				axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + user.dmChannel + '&text=' + reminder + '&pretty=1');
-		    }, 1000);
 			
 		}
 	});
@@ -256,6 +251,7 @@ function makeReport(name, res, channel) {
 			console.log("Error finding user for quickreport");
 		}
 		if (user) {
+			console.log("found user");
 			var message = "*" + user.name;
 			if (user.type === "High School") {
 				message = message.concat(" - Mentee*\n");
@@ -282,20 +278,11 @@ function makeReport(name, res, channel) {
 
 			}
 
-			// var body = {
-			// 	response_type: "in_channel",
-			// 	"text": message
-			// };
-
 			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 
 		}
 		else {
 			var message = "We weren't able to find anyone using the name " + name;
-			// var body = {
-			// 	response_type: "in_channel",
-			// 	"text": message
-			// };
 			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 		}
 	});
@@ -312,73 +299,29 @@ app.post('/quickreport', function(req, res) {
 	var textlen = text.length;
 	var channel = req.body.channel_id;
 
-	var params = text.match(/[^"]*.*?[^"]*/g);
+	var params = text.match(/[^“"]*.*?[^”"]*/g);
 	var params = params.filter(function(x){return x !== '' && x!== ' '})
 
 	console.log(params);
 
-
 	if (params.length === 0) {
+		console.log("entered this message");
 		// Send response saying you need to input a name
 		var message = "You need to specify a mentor or mentee to look for!";
-		// var body = {
-		// 	response_type: "in_channel",
-		// 	"text": message
-		// };
 		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
-		// res.send(body);
 	}
 	else if (params === null) {
 		// Used the command incorrectly
-		// Give instructions on how to use it
+		console.log("entered this message");
 		var message = "There was an error with how you tried to use the command : ( Follow the pointers that come up when you type the command";
-		// var body = {
-		// 	response_type: "in_channel",
-		// 	"text": message
-		// };
 		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
-		// res.send(body);
 	}
 	else {
 		// var seenIDs = [];
 		for (var i = 0; i<params.length; i++) {
 			makeReport(params[i], res, channel);
-			// // params[i]
-			// // search by the key word
-			// var phrases = params[i].split(" ");
-			// for (var j = 0; j<phrases.length; j++) {
-				
-			// }
-				
 		}
 	}
-
-	// var text = req.body;
-	// var channel = text.channel_id;
-	// console.log(text.text);
-
-	// if (text.text === "\"Fabian Gomez\"" || text.text === "“Fabian Gomez”") {
-	// 	var message = "*Fabian Gomez - Mentor*\nTotal Messages: 73\nMessages This Week: 31\nAverage Rating:8\nLinks Sent:\n\thttps://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf\n\thttps://www.questbridge.org/high-school-students/national-college-match/how-to-apply";
-
-	// 	var body = {
-	// 		response_type: "in_channel",
-	// 		"text": message
-	// 	};
-
-	// 	res.send(body);
-	// }
-	// else {
-	// 	var message = "*Johnny Garcia - Mentee*\nTotal Messages: 54\nMessages This Week: 18\nSessions Attended: 1";
-	// 	// message.replace(/ /g,"%20");
-	// 	// axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
-		
-	// 	var body = {
-	// 		response_type: "in_channel",
-	// 		"text": message
-	// 	};
-
-	// 	res.send(body);
-	// }
 
 });
 
@@ -492,7 +435,7 @@ function triadMessage(body) {
 			}
 			triad.save((err) => {
 				if (err) {
-					console.log("Error adding message to mlab in triad for user")
+					console.log("Error adding message to mlab in triad for user");
 				}
 			});
 		}
@@ -508,23 +451,36 @@ function handleMessage(body) {
 			user.totalMessages = user.totalMessages + 1;
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
+			if (findLink(body)) {
+				if (!user.links.includes(body.event.text)) {
+					console.log("found duplicate link! The link may be important...")
+					// Maybe can add more here in future because mentor thinks this link is important
+				}
+				else {
+					user.links = user.links.concat(body.event.text);
+				}
+			}
 			user.save((err) => {
 				if (err) {
 			  		console.log("Error adding message info to mlab", err);
 			  	}
 			});
 			triadMessage(body);
+
 		}
 	});
+}
+
+function findLink(body) {
+	var text = body.event.text;
+	return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(text);
+
 }
 
 function addFile(body) {
 	console.log('Not implemented yet - addFile');
 }
 
-function addLink(body) {
-	console.log('Not implemented yet - addLink');
-}
 
 
 // Look up a user by email: https://api.slack.com/methods/users.lookupByEmail
