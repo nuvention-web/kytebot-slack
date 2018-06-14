@@ -11,9 +11,13 @@ https://join.slack.com/t/slack-tests-group/shared_invite/enQtMzgwNjIyNjM2MDY0LTE
 nuventiontest2018@outlook.com
 test2018
 
+For the report, we decided to give the example account for you to test the name "Kya"
+
 To get a report, use the slash command /quickreport. Instructions for how to use it will come up in slack, but here's the basic usage:
 
 /quickreport "name"
+
+/quickreport "Kya"
 
 /quickreport "name" "name" "name" "name" "name" ....
 
