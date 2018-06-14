@@ -277,7 +277,8 @@ function makeReport(name, res, channel) {
 				message = message.concat("\nAverage Rating: ");
 				message = message.concat(user.averageRating);
 				message = message.concat("\nLinks Sent:");
-				if (user.links.length === 0) {
+
+				if (user.links.length === 0 || user.links === [null]) {
 					message = message.concat("\n\tNo links sent!");
 				}
 				else {
@@ -286,9 +287,9 @@ function makeReport(name, res, channel) {
 						message = message.concat(user.links[i]);
 					}
 				}
-				message = message.concat("\nFiles Sent:");
 				console.log(user.images);
-				if (user.images.length === 0) {
+				message = message.concat("\nFiles Sent:");
+				if (user.images.length === 0 || user.images === [null]) {
 					message = message.concat("\n\tNo files sent!");
 				}
 				else {
@@ -297,8 +298,6 @@ function makeReport(name, res, channel) {
 						message = message.concat(user.images[i]);
 					}
 				}
-				
-
 			}
 
 			axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
@@ -321,27 +320,29 @@ app.post('/quickreport', function(req, res) {
 	var text = req.body.text;
 	var textlen = text.length;
 	var channel = req.body.channel_id;
-
-	var params = text.match(/[^“"]*.*?[^”"]*/g);
-	var params = params.filter(function(x){return x !== '' && x!== ' '})
+	text = text.replace(/”/g, "\"");
+	text = text.replace(/“/g, "\"");
+	var params = text.match(/[^"]*.*?[^"]*/g);
+	var params = params.filter(function(x){return x !== '' && x !== ' '})
 
 	console.log(params);
 
 	if (params.length === 0) {
 		console.log("entered this message");
 		// Send response saying you need to input a name
-		var message = "You need to specify a mentor or mentee to look for!";
+		var message = "You need to specify a mentor or mentee to look for";
 		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 	}
 	else if (params === null) {
 		// Used the command incorrectly
 		console.log("entered this message");
-		var message = "There was an error with how you tried to use the command : ( Follow the pointers that come up when you type the command";
+		var message = "There was an error with how you tried to use the command. Follow the pointers that come up when you type the command";
 		axios.post('https://slack.com/api/chat.postMessage?token=' + bot_token + '&channel=' + channel + '&text=' + message + '&pretty=1');
 	}
 	else {
 		// var seenIDs = [];
 		for (var i = 0; i<params.length; i++) {
+			console.log("in for loop for slash command")
 			makeReport(params[i], res, channel);
 		}
 	}
@@ -475,14 +476,17 @@ function handleMessage(body) {
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
 			if (findLink(body)) {
-				if (user.links.includes(body.event.text)) {
-					// Need to check only the link, not the entire message
-					console.log("found duplicate link! The link may be important...")
-					// Maybe can add more here in future because mentor thinks this link is important
-				}
-				else {
-					// Need to make it so it only adds the link. Not the entire message if there is more.
-					user.links = user.links.concat(body.event.text);
+				var links = extractLinks(body.event.text);
+				for (var i = 0; i<links.length; i++) {
+					if (user.links.includes(links[i])) {
+						// Need to check only the link, not the entire message
+						console.log("found duplicate link! The link may be important...")
+						// Maybe can add more here in future because mentor thinks this link is important
+					}
+					else {
+						// Need to make it so it only adds the link. Not the entire message if there is more.
+						user.links = user.links.concat(links[i]);
+					}
 				}
 			}
 			user.save((err) => {
@@ -499,7 +503,11 @@ function handleMessage(body) {
 function findLink(body) {
 	var text = body.event.text;
 	return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(text);
+}
 
+function extractLinks(text) {
+	var link = text.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/g);
+	return link;
 }
 
 function addFile(body) {
@@ -508,11 +516,9 @@ function addFile(body) {
 			console.log("Error in finding User", err)
 		}
 		if (user) {
-			console.log(user);
 			user.totalMessages = user.totalMessages + 1;
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
-			console.log(user.images);
 			if (user.images.includes(body.event.file.url_private)) {
 				console.log("found duplicate file! The file may be important...")
 				// Maybe can add more here in future because mentor thinks this link is important
@@ -520,7 +526,6 @@ function addFile(body) {
 			else {
 				user.images = user.images.concat(body.event.file.url_private);
 			}
-			console.log(user.images);
 			user.save((err) => {
 				if (err) {
 			  		console.log("Error adding message info to mlab", err);
