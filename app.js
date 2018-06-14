@@ -475,11 +475,9 @@ function handleMessage(body) {
 			user.totalMessages = user.totalMessages + 1;
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
-			console.log(user.links);
 			console.log(findLink(body));
 			if (findLink(body)) {
 				var links = extractLinks(body.event.text);
-				console.log(links);
 				for (var i = 0; i<links.length; i++) {
 					if (user.links.includes(links[i])) {
 						// Need to check only the link, not the entire message
@@ -487,13 +485,11 @@ function handleMessage(body) {
 						// Maybe can add more here in future because mentor thinks this link is important
 					}
 					else {
-						console.log(links[i]);
 						// Need to make it so it only adds the link. Not the entire message if there is more.
 						user.links = user.links.concat(links[i]);
 					}
 				}
 			}
-			console.log(user.links);
 			user.save((err) => {
 				if (err) {
 			  		console.log("Error adding message info to mlab", err);
@@ -509,13 +505,14 @@ function findLink(body) {
 	var text = body.event.text;
 	text = text.replace(/</g, "");
 	text = text.replace(/>/g, "");
-	return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(text);
+	console.log(text);
+	return /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(text);
 }
 
 function extractLinks(text) {
 	text = text.replace(/</g, "");
 	text = text.replace(/>/g, "");
-	var link = text.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/g);
+	var link = text.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/g);
 	return link;
 }
 
