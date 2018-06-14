@@ -32,9 +32,30 @@ const userSchema = new Schema({
     required: true,
   },
   type: {
-    type: [mongoose.Schema.Types.Mixed],
+    type: mongoose.Schema.Types.Mixed,
     required: true,
-  }
+  },
+  lastMessage: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  directMessage: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  dmChannel: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  averageRating: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+  sessionsAttended: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
+
 })
 
 const User = mongoose.model('User', userSchema);

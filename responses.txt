@@ -1,0 +1,231 @@
+------------------
+FOR TESTING
+------------------
+
+A MESSAGE IN GENERAL
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "user":"U6604NYP5", "text":"test message"}}'   http://localhost:4000/activity
+
+A LINK IN GENERAL
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "user":"U6604NYP5", "text":"hey! check out this link: <https://search-proquest-com.turing.library.northwestern.edu/news/docview/1267884060/FA017087E4BE41F1PQ/2?accountid=12861>"}}'   http://localhost:4000/activity
+
+A MESSAGE IN TRIAD
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "user":"U6604NYP5", "text":"test message", "channel": "CAZS8A0MT"}}'   http://localhost:4000/activity
+
+A LINK IN TRIAD
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "user":"U6604NYP5", "text":"<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test>", "channel": "CAZS8A0MT"}}'   http://localhost:4000/activity
+
+
+
+A NEW MEMBER TO A TRIAD
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event":{"type":"message", "subtype": "channel_join", "channel": "CAZS8A0MT", "user":"UAVM2T464", "text":"test message", "channel": "CAZS8A0MT"}}'   http://localhost:4000/activity
+
+
+A NEW TRIAD IS MADE
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event":{"type":"channel_created", "channel": {"name": "new-triad", "creator": "U6604NYP5"}}}'   http://localhost:4000/activity
+
+A FILE IS SENT
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "subtype": "file_share", "user":"U6604NYP5", "text":"<@U6604NYP5> uploaded a file: <https://slack-tests-group.slack.com/files/U6604NYP5/FB71Q5A5S/gabe.jpg|gabe.jpg>", "file": { "url_private": "https://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf"}}}'   http://localhost:4000/activity
+
+
+SLASH COMMAND SENT
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"\"name one\" \"name two\"", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/report
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"“Charbel”", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/quickreport
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"Gabe", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/quickreport
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"\"nopes\"", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/quickreport
+
+
+
+2018-06-01T00:32:34.784506+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-06-01T00:32:34.784529+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-06-01T00:32:34.784531+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-06-01T00:32:34.784533+00:00 app[web.1]: event:
+2018-06-01T00:32:34.784534+00:00 app[web.1]: { type: 'channel_created',
+2018-06-01T00:32:34.784536+00:00 app[web.1]: channel:
+2018-06-01T00:32:34.784537+00:00 app[web.1]: { id: 'CAZS8A0MT',
+2018-06-01T00:32:34.784539+00:00 app[web.1]: is_channel: true,
+2018-06-01T00:32:34.784540+00:00 app[web.1]: name: 'test-triad',
+2018-06-01T00:32:34.784542+00:00 app[web.1]: name_normalized: 'test-triad',
+2018-06-01T00:32:34.784544+00:00 app[web.1]: created: 1527813154,
+2018-06-01T00:32:34.784546+00:00 app[web.1]: creator: 'U6604NYP5',
+2018-06-01T00:32:34.784547+00:00 app[web.1]: is_shared: false,
+2018-06-01T00:32:34.784549+00:00 app[web.1]: is_org_shared: false },
+2018-06-01T00:32:34.784551+00:00 app[web.1]: event_ts: '1527813154.000174' },
+2018-06-01T00:32:34.784552+00:00 app[web.1]: type: 'event_callback',
+2018-06-01T00:32:34.784554+00:00 app[web.1]: event_id: 'EvAZ1PU53J',
+2018-06-01T00:32:34.784555+00:00 app[web.1]: event_time: 1527813154,
+2018-06-01T00:32:34.784557+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+
+
+
+------------------
+NEW USER TO SLACK
+------------------
+
+2018-05-25T15:06:31.470554+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:06:31.470567+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.470569+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-05-25T15:06:31.470580+00:00 app[web.1]: event:
+2018-05-25T15:06:31.470586+00:00 app[web.1]: { type: 'team_join',
+2018-05-25T15:06:31.470588+00:00 app[web.1]: user:
+2018-05-25T15:06:31.470589+00:00 app[web.1]: { id: 'UAVM2T464',
+2018-05-25T15:06:31.470591+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.470593+00:00 app[web.1]: name: 'charbelbourjas2019',
+2018-05-25T15:06:31.470594+00:00 app[web.1]: deleted: false,
+2018-05-25T15:06:31.470596+00:00 app[web.1]: color: '2b6836',
+2018-05-25T15:06:31.470598+00:00 app[web.1]: real_name: 'Charbel Bourjas',
+2018-05-25T15:06:31.470599+00:00 app[web.1]: tz: 'America/Chicago',
+2018-05-25T15:06:31.470601+00:00 app[web.1]: tz_label: 'Central Daylight Time',
+2018-05-25T15:06:31.470603+00:00 app[web.1]: tz_offset: -18000,
+2018-05-25T15:06:31.470604+00:00 app[web.1]: profile: [Object],
+2018-05-25T15:06:31.470606+00:00 app[web.1]: is_admin: false,
+2018-05-25T15:06:31.470608+00:00 app[web.1]: is_owner: false,
+2018-05-25T15:06:31.470609+00:00 app[web.1]: is_primary_owner: false,
+2018-05-25T15:06:31.470611+00:00 app[web.1]: is_restricted: false,
+2018-05-25T15:06:31.470612+00:00 app[web.1]: is_ultra_restricted: false,
+2018-05-25T15:06:31.470618+00:00 app[web.1]: is_bot: false,
+2018-05-25T15:06:31.470619+00:00 app[web.1]: updated: 1527260791,
+2018-05-25T15:06:31.470621+00:00 app[web.1]: is_app_user: false,
+2018-05-25T15:06:31.470622+00:00 app[web.1]: presence: 'away' },
+2018-05-25T15:06:31.470624+00:00 app[web.1]: cache_ts: 1527260791,
+2018-05-25T15:06:31.470626+00:00 app[web.1]: event_ts: '1527260791.000199' },
+2018-05-25T15:06:31.470627+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:06:31.470629+00:00 app[web.1]: event_id: 'EvAVM2TGC8',
+2018-05-25T15:06:31.470638+00:00 app[web.1]: event_time: 1527260791,
+2018-05-25T15:06:31.470640+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+2018-05-25T15:06:31.470751+00:00 app[web.1]: The action is not something we are storing in the database
+2018-05-25T15:06:31.536474+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.536475+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+
+2018-05-25T15:06:31.536470+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:06:31.536479+00:00 app[web.1]: { user: 'UAVM2T464',
+2018-05-25T15:06:31.536477+00:00 app[web.1]: event:
+2018-05-25T15:06:31.536481+00:00 app[web.1]: text: '<@UAVM2T464> has joined the channel',
+2018-05-25T15:06:31.536483+00:00 app[web.1]: type: 'message',
+2018-05-25T15:06:31.536486+00:00 app[web.1]: subtype: 'channel_join',
+2018-05-25T15:06:31.536488+00:00 app[web.1]: ts: '1527260791.000283',
+2018-05-25T15:06:31.536489+00:00 app[web.1]: channel: 'C65C5RZU0',
+2018-05-25T15:06:31.536491+00:00 app[web.1]: event_ts: '1527260791.000283',
+2018-05-25T15:06:31.536492+00:00 app[web.1]: channel_type: 'channel' },
+2018-05-25T15:06:31.536494+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:06:31.536495+00:00 app[web.1]: event_id: 'EvAVRJ66HX',
+2018-05-25T15:06:31.536498+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+2018-05-25T15:06:31.536627+00:00 app[web.1]: Not implemented yet - joinChannel
+2018-05-25T15:06:31.536497+00:00 app[web.1]: event_time: 1527260791,
+
+2018-05-25T15:06:31.580981+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:06:31.580984+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:06:31.580986+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-05-25T15:06:31.580988+00:00 app[web.1]: event:
+2018-05-25T15:06:31.580990+00:00 app[web.1]: { user: 'UAVM2T464',
+2018-05-25T15:06:31.580992+00:00 app[web.1]: text: '<@UAVM2T464> has joined the channel',
+2018-05-25T15:06:31.580994+00:00 app[web.1]: type: 'message',
+2018-05-25T15:06:31.580997+00:00 app[web.1]: ts: '1527260791.000300',
+2018-05-25T15:06:31.580999+00:00 app[web.1]: channel: 'C6659GY13',
+2018-05-25T15:06:31.580995+00:00 app[web.1]: subtype: 'channel_join',
+2018-05-25T15:06:31.581000+00:00 app[web.1]: event_ts: '1527260791.000300',
+2018-05-25T15:06:31.581002+00:00 app[web.1]: channel_type: 'channel' },
+2018-05-25T15:06:31.581003+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:06:31.581005+00:00 app[web.1]: event_id: 'EvAW96FQ4T',
+2018-05-25T15:06:31.581006+00:00 app[web.1]: event_time: 1527260791,
+2018-05-25T15:06:31.581008+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+2018-05-25T15:06:31.581014+00:00 app[web.1]: Not implemented yet - joinChannel
+
+
+------------------
+MESSAGE TO SLACK
+------------------
+
+2018-05-25T15:09:47.634188+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-05-25T15:09:47.634202+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-05-25T15:09:47.634204+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-05-25T15:09:47.634206+00:00 app[web.1]: event:
+2018-05-25T15:09:47.634207+00:00 app[web.1]: { type: 'message',
+2018-05-25T15:09:47.634214+00:00 app[web.1]: text: 'hello',
+2018-05-25T15:09:47.634215+00:00 app[web.1]: ts: '1527260987.000431',
+2018-05-25T15:09:47.634217+00:00 app[web.1]: channel: 'C6659GY13',
+2018-05-25T15:09:47.634209+00:00 app[web.1]: user: 'UAVM2T464',
+2018-05-25T15:09:47.634218+00:00 app[web.1]: event_ts: '1527260987.000431',
+2018-05-25T15:09:47.634220+00:00 app[web.1]: channel_type: 'channel' },
+2018-05-25T15:09:47.634222+00:00 app[web.1]: type: 'event_callback',
+2018-05-25T15:09:47.634224+00:00 app[web.1]: event_id: 'EvAW992SM9',
+2018-05-25T15:09:47.634226+00:00 app[web.1]: event_time: 1527260987,
+2018-05-25T15:09:47.634228+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+
+
+-------------------------
+A CHANNEL/TRIAD IS MADE
+-------------------------
+
+2018-06-01T00:32:34.784506+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-06-01T00:32:34.784529+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-06-01T00:32:34.784531+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-06-01T00:32:34.784533+00:00 app[web.1]: event:
+2018-06-01T00:32:34.784534+00:00 app[web.1]: { type: 'channel_created',
+2018-06-01T00:32:34.784536+00:00 app[web.1]: channel:
+2018-06-01T00:32:34.784537+00:00 app[web.1]: { id: 'CAZS8A0MT',
+2018-06-01T00:32:34.784539+00:00 app[web.1]: is_channel: true,
+2018-06-01T00:32:34.784540+00:00 app[web.1]: name: 'test-triad',
+2018-06-01T00:32:34.784542+00:00 app[web.1]: name_normalized: 'test-triad',
+2018-06-01T00:32:34.784544+00:00 app[web.1]: created: 1527813154,
+2018-06-01T00:32:34.784546+00:00 app[web.1]: creator: 'U6604NYP5',
+2018-06-01T00:32:34.784547+00:00 app[web.1]: is_shared: false,
+2018-06-01T00:32:34.784549+00:00 app[web.1]: is_org_shared: false },
+2018-06-01T00:32:34.784551+00:00 app[web.1]: event_ts: '1527813154.000174' },
+2018-06-01T00:32:34.784552+00:00 app[web.1]: type: 'event_callback',
+2018-06-01T00:32:34.784554+00:00 app[web.1]: event_id: 'EvAZ1PU53J',
+2018-06-01T00:32:34.784555+00:00 app[web.1]: event_time: 1527813154,
+2018-06-01T00:32:34.784557+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+
+------------------------------
+A MEMBER JOINS A CHANNEL/TRIAD
+------------------------------
+
+2018-06-01T01:16:21.801055+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-06-01T01:16:21.801770+00:00 app[web.1]: team_id: 'T6659GWTX',
+2018-06-01T01:16:21.801774+00:00 app[web.1]: api_app_id: 'AAUJH6RK9',
+2018-06-01T01:16:21.801777+00:00 app[web.1]: event:
+2018-06-01T01:16:21.801779+00:00 app[web.1]: { user: 'UAVM2T464',
+2018-06-01T01:16:21.801780+00:00 app[web.1]: inviter: 'U6604NYP5',
+2018-06-01T01:16:21.801783+00:00 app[web.1]: text: '<@UAVM2T464> has joined the channel',
+2018-06-01T01:16:21.801784+00:00 app[web.1]: type: 'message',
+2018-06-01T01:16:21.801786+00:00 app[web.1]: subtype: 'channel_join',
+2018-06-01T01:16:21.801788+00:00 app[web.1]: ts: '1527815781.000192',
+2018-06-01T01:16:21.801790+00:00 app[web.1]: channel: 'CAZS8A0MT',
+2018-06-01T01:16:21.801792+00:00 app[web.1]: event_ts: '1527815781.000192',
+2018-06-01T01:16:21.801794+00:00 app[web.1]: channel_type: 'channel' },
+2018-06-01T01:16:21.801795+00:00 app[web.1]: type: 'event_callback',
+2018-06-01T01:16:21.801797+00:00 app[web.1]: event_id: 'EvAZG0MJ68',
+2018-06-01T01:16:21.801799+00:00 app[web.1]: event_time: 1527815781,
+2018-06-01T01:16:21.801801+00:00 app[web.1]: authed_users: [ 'U6604NYP5' ] }
+
+------------------------------
+A SLASH COMMAND - REPORT
+------------------------------
+
+team_id: 'T6659GWTX',
+2018-06-11T17:10:13.748022+00:00 app[web.1]: team_domain: 'slack-tests-group',
+2018-06-11T17:10:13.748006+00:00 app[web.1]: { token: 'DPahdcXzDLWesegTAQJofx9c',
+2018-06-11T17:10:13.748023+00:00 app[web.1]: channel_id: 'C6659GY13',
+2018-06-11T17:10:13.748024+00:00 app[web.1]: channel_name: 'general',
+2018-06-11T17:10:13.748028+00:00 app[web.1]: command: '/report',
+2018-06-11T17:10:13.748026+00:00 app[web.1]: user_id: 'U6604NYP5',
+2018-06-11T17:10:13.748027+00:00 app[web.1]: user_name: 'gabe',
+2018-06-11T17:10:13.748029+00:00 app[web.1]: text: '“name one” “name two”',
+2018-06-11T17:10:13.748031+00:00 app[web.1]: response_url:
+2018-06-11T17:10:13.748033+00:00 app[web.1]: 'https://hooks.slack.com/commands/T6659GWTX/378801432576/jpr4hBTiUy5o9Grnfgil8gfM',
+2018-06-11T17:10:13.748035+00:00 app[web.1]: trigger_id: '379499894162.210179574949.03d4ac766b11d8feaec96d62713a4cc7' }
+
+
+
+
