@@ -190,6 +190,12 @@ async function checkTimes() {
 // Slack command that lets you check on an individual person and a pair:
 
 app.post('/report', function(req, res) {
+	var body = {
+		response_type: "in_channel",
+		"text": ""
+	};
+	res.send(body);
+
 	// Optionally pass a name to get a report for just one person
 
 	var text = req.body.text;
@@ -274,6 +280,11 @@ function makeReport(name, res, channel) {
 				for (var i = 0; i<user.links.length; i++) {
 					message = message.concat("\n\t");
 					message = message.concat(user.links[i]);
+				}
+				message = message.concat("\nFiles Sent:");
+				for (var i = 0; i<user.images.length; i++) {
+					message = message.concat("\n\t");
+					message = message.concat(user.images[i]);
 				}
 
 			}
@@ -452,11 +463,13 @@ function handleMessage(body) {
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
 			if (findLink(body)) {
-				if (!user.links.includes(body.event.text)) {
+				if (user.links.includes(body.event.text)) {
+					// Need to check only the link, not the entire message
 					console.log("found duplicate link! The link may be important...")
 					// Maybe can add more here in future because mentor thinks this link is important
 				}
 				else {
+					// Need to make it so it only adds the link. Not the entire message if there is more.
 					user.links = user.links.concat(body.event.text);
 				}
 			}
@@ -478,7 +491,32 @@ function findLink(body) {
 }
 
 function addFile(body) {
-	console.log('Not implemented yet - addFile');
+	User.findOne({'user': body.event.user}, (err, user) => {
+		if (err) {
+			console.log("Error in finding User", err)
+		}
+		if (user) {
+			user.totalMessages = user.totalMessages + 1;
+			user.messages = user.messages + 1;
+			user.lastMessage = body.event_time;
+			console.log(user.images);
+			if (user.images.includes(body.event.file.url_private)) {
+				console.log("found duplicate file! The file may be important...")
+				// Maybe can add more here in future because mentor thinks this link is important
+			}
+			else {
+				user.images = user.images.concat(body.event.file.url_private);
+			}
+			console.log(user.images);
+			user.save((err) => {
+				if (err) {
+			  		console.log("Error adding message info to mlab", err);
+			  	}
+			});
+			triadMessage(body);
+
+		}
+	});
 }
 
 
@@ -486,17 +524,6 @@ function addFile(body) {
 // Look up a user by email: https://api.slack.com/methods/users.lookupByEmail
 
 // Look up a user by ID: https://api.slack.com/methods/users.profile.get
-
-
-// For next dev slice:
-app.post('/report', function(req, res) {
-	// The one parameter we have is the triad name
-
-	// Visualize the data
-	// Can expect the triad name as an argument - if not then we get all the triads info
-	// This webhook is hooked up to slack, we just need to send a response with the right data
-
- });
 
 //====MONGOOSE CONNECT===//
 mongoose.connect(url, function (err, db) {

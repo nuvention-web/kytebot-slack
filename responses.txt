@@ -27,6 +27,11 @@ A NEW TRIAD IS MADE
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"event":{"type":"channel_created", "channel": {"name": "new-triad", "creator": "U6604NYP5"}}}'   http://localhost:4000/activity
 
+A FILE IS SENT
+
+curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "subtype": "file_share", "user":"U6604NYP5", "text":"<@U6604NYP5> uploaded a file: <https://slack-tests-group.slack.com/files/U6604NYP5/FB71Q5A5S/gabe.jpg|gabe.jpg>", "file": { "url_private": "https://undergradaid.northwestern.edu/docs/FinancialAidBrochure2017-18.pdf"}}}'   http://localhost:4000/activity
+
+
 SLASH COMMAND SENT
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"\"name one\" \"name two\"", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/report
