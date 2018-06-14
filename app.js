@@ -475,6 +475,7 @@ function handleMessage(body) {
 			console.log(findLink(body));
 			if (findLink(body)) {
 				var links = extractLinks(body.event.text);
+				console.log(links);
 				for (var i = 0; i<links.length; i++) {
 					if (user.links.includes(links[i])) {
 						// Need to check only the link, not the entire message
