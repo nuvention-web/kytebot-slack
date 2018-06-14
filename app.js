@@ -257,7 +257,6 @@ function makeReport(name, res, channel) {
 			console.log("Error finding user for quickreport");
 		}
 		if (user) {
-			console.log("found user");
 			var message = "*" + user.name;
 			if (user.type === "High School") {
 				message = message.concat(" - Mentee*\n");
@@ -287,7 +286,6 @@ function makeReport(name, res, channel) {
 						message = message.concat(user.links[i]);
 					}
 				}
-				console.log(user.images);
 				message = message.concat("\nFiles Sent:");
 				if (user.images.length === 0 || user.images === [null]) {
 					message = message.concat("\n\tNo files sent!");
@@ -342,7 +340,6 @@ app.post('/quickreport', function(req, res) {
 	else {
 		// var seenIDs = [];
 		for (var i = 0; i<params.length; i++) {
-			console.log("in for loop for slash command")
 			makeReport(params[i], res, channel);
 		}
 	}
