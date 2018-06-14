@@ -507,10 +507,14 @@ function handleMessage(body) {
 
 function findLink(body) {
 	var text = body.event.text;
+	text = text.replace(/</g, "");
+	text = text.replace(/>/g, "");
 	return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(text);
 }
 
 function extractLinks(text) {
+	text = text.replace(/</g, "");
+	text = text.replace(/>/g, "");
 	var link = text.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/g);
 	return link;
 }
