@@ -472,6 +472,7 @@ function handleMessage(body) {
 			user.totalMessages = user.totalMessages + 1;
 			user.messages = user.messages + 1;
 			user.lastMessage = body.event_time;
+			console.log(extractLinks(body.event.text));
 			console.log(findLink(body));
 			if (findLink(body)) {
 				var links = extractLinks(body.event.text);
@@ -503,15 +504,19 @@ function findLink(body) {
 	var text = body.event.text;
 	text = text.replace(/</g, "");
 	text = text.replace(/>/g, "");
-	console.log(text);
-	return /(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(text);
+	return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(text);
+	// It can't currently pick up links that are in a sentence because of the ^ in the regex which specifies that
+	// the expression needs to come at the beginning of the string that's being looked at. It could be taken out, but
+	// then it enters something that appears inifinite (but I think it's catastrphic backtracking). If the regex
+	// could be changed to detect a link anywhere we would have what we want. Right now it only picks them up if
+	// it's at the beginning of the message
 }
 
 function extractLinks(text) {
 	text = text.replace(/</g, "");
 	text = text.replace(/>/g, "");
-	var link = text.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/g);
-	return link;
+	var links = text.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/g);
+	return links;
 }
 
 function addFile(body) {
