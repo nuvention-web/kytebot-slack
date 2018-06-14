@@ -8,7 +8,7 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"even
 
 A LINK IN GENERAL
 
-curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "user":"U6604NYP5", "text":"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test"}}'   http://localhost:4000/activity
+curl --header "Content-Type: application/json"   --request POST   --data '{"event_time": 1528935368, "event":{"type":"message", "user":"U6604NYP5", "text":"Messagge with a link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test"}}'   http://localhost:4000/activity
 
 A MESSAGE IN TRIAD
 
@@ -38,7 +38,7 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"toke
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"“Fabian”", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/quickreport
 
-curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"“", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/quickreport
+curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"Gabe", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/quickreport
 
 curl --header "Content-Type: application/json"   --request POST   --data '{"token":"DPahdcXzDLWesegTAQJofx9c", "channel_id":"C6659GY13", "user_id": "U6604NYP5", "user_name":"gabe", "text":"\"nopes\"", "response_url":"https://hooks.slack.com/commands/T6659GWTX/379414234851/u6L8sTBM5Ua9lYXmIW74vxtl"}'   http://localhost:4000/quickreport
 

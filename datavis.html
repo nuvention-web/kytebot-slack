@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="d3.min.js"></script>
+</head>
+<body>
+
+// this is an example visualisation of a data
+<script>
+  // write your d3 code here..
+  d3.select('#chart')
+  .selectAll("div")
+  .data([4, 8, 15, 16, 23, 42])
+  .enter()
+  .append("div")
+  .style("height", (d)=> d + "px")
+</script>
+
+</body>
+</html
