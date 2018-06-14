@@ -277,15 +277,26 @@ function makeReport(name, res, channel) {
 				message = message.concat("\nAverage Rating: ");
 				message = message.concat(user.averageRating);
 				message = message.concat("\nLinks Sent:");
-				for (var i = 0; i<user.links.length; i++) {
-					message = message.concat("\n\t");
-					message = message.concat(user.links[i]);
+				if (user.links.length === 0) {
+					message = message.concat("\n\tNo links sent!");
+				}
+				else {
+					for (var i = 0; i<user.links.length; i++) {
+						message = message.concat("\n\t");
+						message = message.concat(user.links[i]);
+					}
 				}
 				message = message.concat("\nFiles Sent:");
-				for (var i = 0; i<user.images.length; i++) {
-					message = message.concat("\n\t");
-					message = message.concat(user.images[i]);
+				if (user.images.length === 0) {
+					message = message.concat("\n\tNo files sent!");
 				}
+				else {
+					for (var i = 0; i<user.images.length; i++) {
+						message = message.concat("\n\t");
+						message = message.concat(user.images[i]);
+					}
+				}
+				
 
 			}
 
